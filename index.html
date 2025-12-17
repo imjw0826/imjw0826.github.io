@@ -1,5 +1,162 @@
----
-layout: home
-# articles:
-#   excerpt_type: html
----
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Garden</title>
+    <meta
+      name="description"
+      content="A personal website to showcase my CV, study notes, and contact information."
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="logo" href="#home">Garden</a>
+        <nav class="site-nav" aria-label="Primary">
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="navigation-menu"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            ☰
+          </button>
+          <ul id="navigation-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#cv">CV</a></li>
+            <li><a href="#notes">Study Notes</a></li>
+            <li><a href="simulation.html">Simulation</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="container hero-content">
+          <div class="hero-text">
+            <p class="eyebrow">Welcome</p>
+            <h1>Hi, I'm Jungwon Im</h1>
+            <p>
+              아무거나 적어두는 곳입니다. 
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="#cv">View CV</a>
+              <a class="button secondary" href="#notes">Browse Notes</a>
+            </div>
+          </div>
+          <div class="hero-card">
+            <h2>소개</h2>
+            <ul>
+              <li><strong>Degree:</strong> Mechanical Engineering, Seoul National University </li>
+              <li><strong>Focus:</strong> film, music, engineering </li>
+              <li><strong>Location:</strong> Seoul, South Korea</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="cv" class="section accent">
+        <div class="container split">
+          <div>
+            <p class="eyebrow">Curriculum Vitae</p>
+            <h2>Keep track of my journey</h2>
+            <p>
+              Download the latest version of my CV to learn more about my
+              education, experience, and projects. I update it regularly so you
+              always see the most recent snapshot.
+            </p>
+            <a class="button primary" href="assets/docs/my-cv.pdf" download>
+              Download CV
+            </a>
+          </div>
+          <div class="card">
+            <h3>What's inside</h3>
+            <ul>
+              <li>Education timeline</li>
+              <li>Technical and soft skills</li>
+              <li>Internships and projects</li>
+              <li>Certifications and awards</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="notes" class="section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Study Notes</p>
+              <h2>Knowledge base in progress</h2>
+              <p>
+                A curated list of my latest study notes. I group them by
+                subject, highlight key topics, and link to the full documents.
+              </p>
+            </div>
+            <div class="filters">
+              <label for="topic-filter" class="sr-only">Filter by topic</label>
+              <select id="topic-filter" name="topic-filter">
+                <option value="all">All topics</option>
+              </select>
+            </div>
+          </div>
+          <div id="notes-grid" class="notes-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="contact" class="section accent">
+        <div class="container split">
+          <div>
+            <p class="eyebrow">Get In Touch</p>
+            <h2>Let's connect</h2>
+            <p>
+              Feel free to reach out if you'd like to talk about projects,
+              opportunities, or collaborating on study sessions.
+            </p>
+            <ul class="contact-list">
+              <li>
+                <span class="contact-label">Email</span>
+                <a href="mailto:hello@example.com">hello@example.com</a>
+              </li>
+              <li>
+                <span class="contact-label">LinkedIn</span>
+                <a href="https://www.linkedin.com" target="_blank" rel="noreferrer"
+                  >linkedin.com/in/your-profile</a
+                >
+              </li>
+              <li>
+                <span class="contact-label">GitHub</span>
+                <a href="https://github.com" target="_blank" rel="noreferrer"
+                  >github.com/your-handle</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Office hours</h3>
+            <p>
+              I try to reply to emails within 2–3 days. If it's urgent, please
+              mention it in the subject line.
+            </p>
+            <p class="note">
+              Need a quick overview? Download the CV above or jump into the
+              notes section to see what I'm learning.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>&copy; <span id="year"></span> [Your Name]. Built with curiosity.</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js" defer></script>
+  </body>
+</html>

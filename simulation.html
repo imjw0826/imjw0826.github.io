@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CED Robocon Simulation</title>
+    <meta
+      name="description"
+      content="Interactive court-style simulation for moving equipment and tracking scores."
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/simulation.css" />
+  </head>
+  <body class="simulation-page">
+    <header class="site-header">
+      <div class="container">
+        <a class="logo" href="index.html">Garden</a>
+        <nav class="site-nav" aria-label="Primary">
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="simulation-menu"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            ☰
+          </button>
+          <ul id="simulation-menu">
+            <li><a href="index.html">Main site</a></li>
+            <li><a href="#court">Court</a></li>
+            <li><a href="#spoilers">Spoilers</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="simulation-main" id="court">
+      <section class="control-bar">
+        <button class="button tertiary" type="button" id="back-button">Undo Move</button>
+        <button class="button primary" type="button" id="reset-button">Reset</button>
+      </section>
+
+      <section class="court-section">
+        <div class="team-stack" data-team="my">
+          <div class="team-zone" data-drop-zone="my">
+            <header class="team-header">
+              <div>
+                <p class="score-label">My Team</p>
+                <h3>My Team Area</h3>
+              </div>
+              <p class="score-value" id="score-my">0</p>
+            </header>
+            <div
+              class="equipment-grid"
+              data-zone="my-items"
+              data-drop-zone="my"
+              aria-live="polite"
+            ></div>
+          </div>
+          <div class="bin-zone card" aria-live="polite">
+            <h4>My Team Bin</h4>
+            <div class="bin-grid" data-zone="my-bin"></div>
+          </div>
+        </div>
+        <div class="center-lane" id="spoilers">
+          <div class="open-area card" data-drop-zone="open">
+            <h3>Open Area</h3>
+            <div
+              class="open-grid"
+              id="open-grid"
+              aria-live="polite"
+            ></div>
+          </div>
+          <div class="pit-lane card">
+            <h3>Pit Lane Spoilers</h3>
+            <div
+              class="equipment-grid"
+              data-zone="pit-items"
+              data-drop-zone="pit"
+              aria-live="polite"
+            ></div>
+          </div>
+          <div id="spoiler-status" class="spoiler-status" aria-live="polite"></div>
+        </div>
+        <div class="team-stack" data-team="opposite">
+          <div class="team-zone" data-drop-zone="opposite">
+            <header class="team-header">
+              <div>
+                <p class="score-label">Opposite Team</p>
+                <h3>Opposite Team Area</h3>
+              </div>
+              <p class="score-value" id="score-opposite">0</p>
+            </header>
+            <div
+              class="equipment-grid"
+              data-zone="opposite-items"
+              data-drop-zone="opposite"
+              aria-live="polite"
+            ></div>
+          </div>
+          <div class="bin-zone card" aria-live="polite">
+            <h4>Opposite Team Bin</h4>
+            <div class="bin-grid" data-zone="opposite-bin"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>&copy; <span id="sim-year"></span> Garden. Court simulation experiment.</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/simulation.js" defer></script>
+  </body>
+</html>
