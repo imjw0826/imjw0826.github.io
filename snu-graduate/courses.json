@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "university": "Seoul National University",
+    "department": "서울대학교 공과대학 기계공학부",
+    "studentName": "임정원",
+    "studentId": "2025-19994",
+    "programSummary": "기계공학 주전공 · 경영학 복수전공 · 미학과 부전공",
+    "totalCreditsRequired": 130,
+    "requirements": {
+      "generalEducation": 49,
+      "mechanicalEngineering": 62,
+      "businessAdministration": 39,
+      "aestheticsMinor": 21
+    }
+  },
+  "courses": [
+    {
+      "name": "영상예술의 이해",
+      "year": 1,
+      "semester": 1,
+      "credits": 3,
+      "category": "교양"
+    },
+    {
+      "name": "대학 글쓰기 1",
+      "year": 1,
+      "semester": 1,
+      "credits": 2,
+      "category": "교양"
+    },
+    {
+      "name": "대학영어 1",
+      "year": 1,
+      "semester": 1,
+      "credits": 3,
+      "category": "교양"
+    },
+    {
+      "name": "수학 1",
+      "year": 1,
+      "semester": 1,
+      "credits": 2,
+      "category": "교양"
+    },
+    {
+      "name": "수학연습 1",
+      "year": 1,
+      "semester": 1,
+      "credits": 1,
+      "category": "교양"
+    },
+    {
+      "name": "통계학실험",
+      "year": 1,
+      "semester": 1,
+      "credits": 1,
+      "category": "교양"
+    },
+    {
+      "name": "물리학 1",
+      "year": 1,
+      "semester": 1,
+      "credits": 3,
+      "category": "교양"
+    },
+    {
+      "name": "물리학실험 1",
+      "year": 1,
+      "semester": 1,
+      "credits": 1,
+      "category": "교양"
+    },
+    {
+      "name": "기계시스템 설계와 로봇 프로그래밍의 기초",
+      "year": 1,
+      "semester": 1,
+      "credits": 3,
+      "category": "기계공학 전공"
+    },
+    {
+      "name": "창의공학설계",
+      "year": 1,
+      "semester": 2,
+      "credits": 3,
+      "category": "기계공학 전공"
+    },
+    {
+      "name": "이슬람 문명의 역사",
+      "year": 1,
+      "semester": 2,
+      "credits": 3,
+      "category": "교양"
+    },
+    {
+      "name": "수학 2",
+      "year": 1,
+      "semester": 2,
+      "credits": 2,
+      "category": "교양"
+    },
+    {
+      "name": "수학연습 2",
+      "year": 1,
+      "semester": 2,
+      "credits": 1,
+      "category": "교양"
+    },
+    {
+      "name": "물리학 2",
+      "year": 1,
+      "semester": 2,
+      "credits": 3,
+      "category": "교양"
+    },
+    {
+      "name": "물리학실험 2",
+      "year": 1,
+      "semester": 2,
+      "credits": 1,
+      "category": "교양"
+    },
+    {
+      "name": "뇌인지과학의 이해",
+      "year": 1,
+      "semester": 2,
+      "credits": 3,
+      "category": "일반선택"
+    },
+    {
+      "name": "기계산업경영2",
+      "year": 1,
+      "semester": 2,
+      "credits": 2,
+      "category": "기계공학 전공"
+    },
+    {
+      "name": "열역학",
+      "year": 2,
+      "semester": 1,
+      "credits": 3,
+      "category": "기계공학 전공"
+    },
+    {
+      "name": "고체역학",
+      "year": 2,
+      "semester": 1,
+      "credits": 3,
+      "category": "기계공학 전공"
+    },
+    {
+      "name": "대학글쓰기 2: 인문학 글쓰기",
+      "year": 2,
+      "semester": 1,
+      "credits": 2,
+      "category": "교양"
+    },
+    {
+      "name": "통계학",
+      "year": 2,
+      "semester": 1,
+      "credits": 3,
+      "category": "교양"
+    },
+    {
+      "name": "컴퓨터의 개념 및 실습",
+      "year": 2,
+      "semester": 1,
+      "credits": 3,
+      "category": "교양"
+    },
+    {
+      "name": "공학수학1",
+      "year": 2,
+      "semester": 1,
+      "credits": 3,
+      "category": "교양"
+    },
+    {
+      "name": "서양미술의 이해",
+      "year": 2,
+      "semester": 1,
+      "credits": 3,
+      "category": "교양"
+    },
+    {
+      "name": "호신술",
+      "year": 2,
+      "semester": 1,
+      "credits": 1,
+      "category": "교양"
+    }
+  ]
+}

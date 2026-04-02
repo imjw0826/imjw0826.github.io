@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>임정원 이수 현황</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="graduate-page">
+  <div class="project-topbar">
+    <a class="project-topbar-link" href="../index.html">Garden home</a>
+    <div class="project-topbar-links">
+      <a class="project-topbar-link" href="../simulation.html">Simulation</a>
+      <span class="project-topbar-current">SNU Graduate Tracker</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-top">
+      <div class="header-title">
+        <span class="header-university" id="header-university"></span>
+        <h1 class="header-department" id="header-title">로딩 중…</h1>
+        <span class="header-subtitle" id="header-subtitle"></span>
+      </div>
+
+      <section class="credit-summary" aria-label="credit summary">
+        <div class="total-summary">
+          <div class="summary-item">
+            <span class="summary-label">이수학점</span>
+            <strong class="summary-value" id="credit-count">0</strong>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-item">
+            <span class="summary-label">채워야 할 학점</span>
+            <strong class="summary-value" id="credit-required">0</strong>
+          </div>
+        </div>
+        <div class="credit-progress-bar" aria-label="total credit progress">
+          <div class="credit-progress-fill" id="credit-progress" style="width: 0%"></div>
+        </div>
+        <div class="requirement-rings" id="requirement-rings"></div>
+      </section>
+    </div>
+  </header>
+
+  <nav class="filter-bar">
+    <div class="filter-controls">
+      <span class="filter-label">Filter</span>
+      <button class="filter-btn active" data-filter="all">전체</button>
+      <button class="filter-btn" data-filter="교양">교양</button>
+      <button class="filter-btn" data-filter="기계공학 전공">기계공학 전공</button>
+      <button class="filter-btn" data-filter="경영학 전공">경영학 전공</button>
+      <button class="filter-btn" data-filter="미학과 부전공">미학과 부전공</button>
+      <button class="filter-btn" data-filter="타 학과 전공">타 학과 전공</button>
+      <button class="filter-btn" data-filter="일반선택">일반선택</button>
+    </div>
+
+    <button class="trash-dropzone" id="trash-dropzone" type="button" aria-label="drag here to delete">
+      <span class="trash-icon">🗑</span>
+      <span class="trash-text">버리기</span>
+    </button>
+  </nav>
+
+  <main class="curriculum-grid" id="curriculum-grid">
+    <div class="state-message">courses.json을 불러오는 중…</div>
+  </main>
+
+  <footer class="project-footer">
+    <a class="project-footer-link" href="../index.html">Back to Garden</a>
+  </footer>
+
+  <div class="modal-backdrop hidden" id="course-modal-backdrop">
+    <div class="course-modal" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
+      <div class="modal-header">
+        <h2 class="modal-title" id="course-modal-title">과목 추가</h2>
+        <button class="modal-close" id="course-modal-close" type="button" aria-label="닫기">×</button>
+      </div>
+
+      <form class="course-form" id="course-form">
+        <label class="form-field">
+          <span>과목명</span>
+          <input id="course-name" name="name" type="text" placeholder="예: 열역학" required />
+        </label>
+
+        <div class="form-grid">
+          <label class="form-field">
+            <span>학년</span>
+            <select id="course-year" name="year" required>
+              <option value="1">1학년</option>
+              <option value="2">2학년</option>
+              <option value="3">3학년</option>
+              <option value="4">4학년</option>
+            </select>
+          </label>
+
+          <label class="form-field">
+            <span>학기</span>
+            <select id="course-semester" name="semester" required>
+              <option value="1">1학기</option>
+              <option value="2">2학기</option>
+            </select>
+          </label>
+
+          <label class="form-field">
+            <span>학점</span>
+            <input id="course-credits" name="credits" type="number" min="1" max="6" step="1" value="3" required />
+          </label>
+
+          <label class="form-field">
+            <span>분류</span>
+            <select id="course-category" name="category" required>
+              <option value="교양">교양</option>
+              <option value="기계공학 전공">기계공학 전공</option>
+              <option value="경영학 전공">경영학 전공</option>
+              <option value="미학과 부전공">미학과 부전공</option>
+              <option value="타 학과 전공">타 학과 전공</option>
+              <option value="일반선택">일반선택</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button class="secondary-btn" id="course-modal-cancel" type="button">취소</button>
+          <button class="primary-btn" type="submit">추가</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'snu-graduate-courses-v2';
+    const classByCategory = {
+      '교양': 'ge',
+      '기계공학 전공': 'mech',
+      '경영학 전공': 'business',
+      '미학과 부전공': 'aesthetics',
+      '타 학과 전공': 'cross',
+      '일반선택': 'elective'
+    };
+
+    const state = {
+      meta: null,
+      courses: [],
+      currentFilter: 'all',
+      draggedCourseId: null
+    };
+
+    function createUid() {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+      }
+      return `course-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function normalizeCourse(course) {
+      return {
+        uid: course.uid || createUid(),
+        name: String(course.name || '').trim(),
+        year: Number(course.year),
+        semester: Number(course.semester),
+        credits: Number(course.credits),
+        category: course.category || '교양'
+      };
+    }
+
+    function sumCredits(items) {
+      return items.reduce((sum, item) => sum + item.credits, 0);
+    }
+
+    function creditsByCategory(courses, category) {
+      return sumCredits(courses.filter(course => course.category === category));
+    }
+
+    function saveCourses() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.courses));
+    }
+
+    function loadStoredCourses() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+
+      try {
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return null;
+        return parsed.map(normalizeCourse);
+      } catch {
+        return null;
+      }
+    }
+
+    function setFilter(filter) {
+      state.currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(button => {
+        button.classList.toggle('active', button.dataset.filter === filter);
+      });
+      buildGrid();
+    }
+
+    function buildCard(course) {
+      const cls = classByCategory[course.category] || 'ge';
+      const card = document.createElement('article');
+      card.className = `course-card ${cls}`;
+      card.dataset.category = course.category;
+      card.dataset.uid = course.uid;
+      card.draggable = true;
+
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="card-type-tag">${course.category}</span>
+          <span class="card-credits">${course.credits}학점</span>
+        </div>
+        <div class="card-name">${course.name}</div>
+      `;
+
+      card.addEventListener('dragstart', event => {
+        state.draggedCourseId = course.uid;
+        card.classList.add('dragging');
+        document.body.classList.add('dragging-course');
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', course.uid);
+      });
+
+      card.addEventListener('dragend', () => {
+        clearDragState();
+      });
+
+      return card;
+    }
+
+    function buildAddCard(year, semester) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'add-course-card';
+      button.innerHTML = `
+        <span class="add-course-plus">+</span>
+        <span class="add-course-text">과목 추가</span>
+      `;
+
+      button.addEventListener('click', () => {
+        openCourseModal({ year, semester });
+      });
+
+      return button;
+    }
+
+    function handleSemesterDrop(year, semester) {
+      if (!state.draggedCourseId) return;
+
+      const course = state.courses.find(item => item.uid === state.draggedCourseId);
+      if (!course) return;
+
+      course.year = year;
+      course.semester = semester;
+      saveCourses();
+      renderAll();
+    }
+
+    function buildGrid() {
+      const grid = document.getElementById('curriculum-grid');
+      grid.innerHTML = '';
+
+      for (let year = 1; year <= 4; year += 1) {
+        for (let semester = 1; semester <= 2; semester += 1) {
+          const section = document.createElement('section');
+          section.className = 'semester-column';
+
+          const label = document.createElement('div');
+          label.className = 'semester-column-label';
+          label.textContent = `${year}학년 ${semester}학기`;
+          section.appendChild(label);
+
+          const list = document.createElement('div');
+          list.className = 'semester-courses';
+
+          const semesterCourses = state.courses.filter(course => course.year === year && course.semester === semester);
+          const visibleCourses = semesterCourses.filter(course => (
+            state.currentFilter === 'all' || course.category === state.currentFilter
+          ));
+
+          visibleCourses.forEach(course => {
+            list.appendChild(buildCard(course));
+          });
+
+          if (visibleCourses.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'semester-empty';
+            empty.textContent = semesterCourses.length === 0 ? '—' : '해당 분류 과목 없음';
+            list.appendChild(empty);
+          }
+
+          list.appendChild(buildAddCard(year, semester));
+
+          section.addEventListener('dragover', event => {
+            event.preventDefault();
+            if (!state.draggedCourseId) return;
+            section.classList.add('drop-target');
+          });
+
+          section.addEventListener('dragleave', event => {
+            if (!section.contains(event.relatedTarget)) {
+              section.classList.remove('drop-target');
+            }
+          });
+
+          section.addEventListener('drop', event => {
+            event.preventDefault();
+            section.classList.remove('drop-target');
+            handleSemesterDrop(year, semester);
+          });
+
+          section.appendChild(list);
+          grid.appendChild(section);
+        }
+      }
+    }
+
+    function buildRequirementCard(config) {
+      const percent = config.required > 0 ? Math.min((config.current / config.required) * 100, 100) : 0;
+      const card = document.createElement('section');
+      card.className = 'ring-card';
+
+      card.innerHTML = `
+        <div class="progress-ring ${config.ringClass}" style="--pct:${percent.toFixed(2)}%">
+          <div class="progress-ring-inner">
+            <strong>${config.current}</strong>
+            <span>/ ${config.required}</span>
+          </div>
+        </div>
+        <div class="ring-label">${config.label}</div>
+      `;
+
+      return card;
+    }
+
+    function updateHeader() {
+      document.title = `${state.meta.studentName} 이수 현황`;
+      document.getElementById('header-university').textContent = state.meta.university;
+      document.getElementById('header-title').textContent = `${state.meta.studentName} (${state.meta.studentId})`;
+      document.getElementById('header-subtitle').textContent = `${state.meta.department} · ${state.meta.programSummary}`;
+    }
+
+    function updateSummary() {
+      const rings = document.getElementById('requirement-rings');
+      const total = sumCredits(state.courses);
+      const totalPercent = state.meta.totalCreditsRequired > 0
+        ? Math.min((total / state.meta.totalCreditsRequired) * 100, 100)
+        : 0;
+
+      document.getElementById('credit-count').textContent = total;
+      document.getElementById('credit-required').textContent = state.meta.totalCreditsRequired;
+      document.getElementById('credit-progress').style.width = `${totalPercent}%`;
+
+      rings.innerHTML = '';
+
+      [
+        {
+          label: '교양',
+          current: creditsByCategory(state.courses, '교양'),
+          required: state.meta.requirements.generalEducation,
+          ringClass: 'ge'
+        },
+        {
+          label: '기계공학 전공',
+          current: creditsByCategory(state.courses, '기계공학 전공'),
+          required: state.meta.requirements.mechanicalEngineering,
+          ringClass: 'mech'
+        },
+        {
+          label: '경영학 전공',
+          current: creditsByCategory(state.courses, '경영학 전공'),
+          required: state.meta.requirements.businessAdministration,
+          ringClass: 'business'
+        },
+        {
+          label: '미학과 부전공',
+          current: creditsByCategory(state.courses, '미학과 부전공'),
+          required: state.meta.requirements.aestheticsMinor,
+          ringClass: 'aesthetics'
+        }
+      ].forEach(config => rings.appendChild(buildRequirementCard(config)));
+    }
+
+    function renderAll() {
+      updateHeader();
+      updateSummary();
+      buildGrid();
+      clearDragState();
+    }
+
+    function openCourseModal(prefill) {
+      document.getElementById('course-name').value = '';
+      document.getElementById('course-year').value = String(prefill.year);
+      document.getElementById('course-semester').value = String(prefill.semester);
+      document.getElementById('course-credits').value = '3';
+      document.getElementById('course-category').value = '교양';
+      document.getElementById('course-modal-backdrop').classList.remove('hidden');
+      requestAnimationFrame(() => {
+        document.getElementById('course-name').focus();
+      });
+    }
+
+    function closeCourseModal() {
+      document.getElementById('course-modal-backdrop').classList.add('hidden');
+      document.getElementById('course-form').reset();
+    }
+
+    function clearDragState() {
+      state.draggedCourseId = null;
+      document.body.classList.remove('dragging-course');
+      document.querySelectorAll('.course-card.dragging').forEach(card => {
+        card.classList.remove('dragging');
+      });
+      document.querySelectorAll('.semester-column.drop-target').forEach(column => {
+        column.classList.remove('drop-target');
+      });
+      document.getElementById('trash-dropzone').classList.remove('drag-near', 'drag-over');
+    }
+
+    function removeDraggedCourse() {
+      if (!state.draggedCourseId) return;
+      state.courses = state.courses.filter(course => course.uid !== state.draggedCourseId);
+      saveCourses();
+      renderAll();
+    }
+
+    document.querySelector('.filter-controls').addEventListener('click', event => {
+      const button = event.target.closest('.filter-btn');
+      if (!button) return;
+      setFilter(button.dataset.filter);
+    });
+
+    document.getElementById('course-form').addEventListener('submit', event => {
+      event.preventDefault();
+
+      const course = normalizeCourse({
+        name: document.getElementById('course-name').value,
+        year: document.getElementById('course-year').value,
+        semester: document.getElementById('course-semester').value,
+        credits: document.getElementById('course-credits').value,
+        category: document.getElementById('course-category').value
+      });
+
+      state.courses.push(course);
+      saveCourses();
+
+      if (state.currentFilter !== 'all' && state.currentFilter !== course.category) {
+        state.currentFilter = 'all';
+      }
+
+      closeCourseModal();
+      renderAll();
+      setFilter(state.currentFilter);
+    });
+
+    document.getElementById('course-modal-close').addEventListener('click', closeCourseModal);
+    document.getElementById('course-modal-cancel').addEventListener('click', closeCourseModal);
+    document.getElementById('course-modal-backdrop').addEventListener('click', event => {
+      if (event.target.id === 'course-modal-backdrop') closeCourseModal();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeCourseModal();
+      }
+    });
+
+    const trashDropzone = document.getElementById('trash-dropzone');
+
+    trashDropzone.addEventListener('dragover', event => {
+      event.preventDefault();
+      if (!state.draggedCourseId) return;
+      trashDropzone.classList.add('drag-over');
+    });
+
+    trashDropzone.addEventListener('dragleave', event => {
+      if (!trashDropzone.contains(event.relatedTarget)) {
+        trashDropzone.classList.remove('drag-over');
+      }
+    });
+
+    trashDropzone.addEventListener('drop', event => {
+      event.preventDefault();
+      removeDraggedCourse();
+    });
+
+    document.addEventListener('dragover', event => {
+      if (!state.draggedCourseId) return;
+
+      const rect = trashDropzone.getBoundingClientRect();
+      const padding = 56;
+      const isNear =
+        event.clientX >= rect.left - padding &&
+        event.clientX <= rect.right + padding &&
+        event.clientY >= rect.top - padding &&
+        event.clientY <= rect.bottom + padding;
+
+      trashDropzone.classList.toggle('drag-near', isNear);
+    });
+
+    fetch('courses.json')
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(data => {
+        state.meta = data.meta;
+        state.courses = loadStoredCourses() || data.courses.map(normalizeCourse);
+        renderAll();
+        setFilter('all');
+      })
+      .catch(error => {
+        document.getElementById('curriculum-grid').innerHTML = `
+          <div class="state-message">
+            courses.json을 불러올 수 없습니다.<br>
+            <small>${error.message}</small>
+          </div>
+        `;
+      });
+  </script>
+</body>
+</html>
