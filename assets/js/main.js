@@ -111,6 +111,12 @@
       notesGrid.appendChild(error);
     });
 
+  const currentPage = location.pathname.split("/").pop() || "index.html";
+  document.querySelectorAll(".site-nav a").forEach((link) => {
+    const linkPage = link.getAttribute("href").split("/").pop();
+    if (linkPage === currentPage) link.classList.add("active");
+  });
+
   const yearElement = document.querySelector("#year");
   if (yearElement) {
     yearElement.textContent = new Date().getFullYear();

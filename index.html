@@ -3,196 +3,562 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Garden</title>
-    <meta
-      name="description"
-      content="A personal website to showcase my CV, study notes, and contact information."
-    />
-    <link rel="stylesheet" href="assets/css/styles.css" />
+    <title>Blueprint — Jungwon Im</title>
+    <meta name="description" content="Jungwon Im — Mechanical Engineer, Filmmaker, Music Producer." />
+    <link rel="stylesheet" href="assets/css/home.css" />
   </head>
   <body>
-    <header class="site-header">
-      <div class="container">
-        <a class="logo" href="#home">Garden</a>
-        <nav class="site-nav" aria-label="Primary">
-          <button
-            class="nav-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="navigation-menu"
-          >
-            <span class="sr-only">Toggle navigation</span>
-            ☰
-          </button>
-          <ul id="navigation-menu">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#cv">CV</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
+    <div class="bp">
+
+      <!-- ═══ Sidebar ═══ -->
+      <aside class="bp-side">
+        <div class="box bp-name">
+          <h1>Jungwon Im</h1>
+        </div>
+
+        <nav class="box bp-nav">
+          <ul>
+            <li><span class="nav-here active">
+              <i class="nav-icon" data-lucide="house" aria-hidden="true"></i> HOME
+            </span></li>
+            <li><a href="projects.html">
+              <i class="nav-icon" data-lucide="folder-git-2" aria-hidden="true"></i> PROJECTS
+            </a></li>
+            <li><a href="blog.html">
+              <i class="nav-icon" data-lucide="file-pen" aria-hidden="true"></i> BLOG
+            </a></li>
+            <li><a href="contact.html">
+              <i class="nav-icon" data-lucide="circle-user" aria-hidden="true"></i> CONTACT
+            </a></li>
           </ul>
         </nav>
-      </div>
-    </header>
 
-    <main id="home">
-      <section class="hero">
-        <div class="container hero-content">
-          <div class="hero-text">
-            <p class="eyebrow">Welcome</p>
-            <h1>Hi, I'm Jungwon Im</h1>
-            <p>
-              아무거나 적어두는 곳입니다. 
-            </p>
-            <div class="hero-actions">
-              <a class="button primary" href="#cv">View CV</a>
-              <a class="button secondary" href="#projects">Browse Projects</a>
-            </div>
-          </div>
-          <div class="hero-card">
-            <h2>소개</h2>
-            <ul>
-              <li><strong>Degree:</strong> Mechanical Engineering, Seoul National University </li>
-              <li><strong>Focus:</strong> film, music, engineering </li>
-              <li><strong>Location:</strong> Seoul, South Korea</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section id="cv" class="section accent">
-        <div class="container split">
-          <div>
-            <p class="eyebrow">Curriculum Vitae</p>
-            <h2>Keep track of my journey</h2>
-            <p>
-              Download the latest version of my CV to learn more about my
-              education, experience, and projects. I update it regularly so you
-              always see the most recent snapshot.
-            </p>
-            <a class="button primary" href="assets/docs/my-cv.pdf" download>
-              Download CV
+        <div class="box bp-connect">
+          <div class="connect-label">CONNECT</div>
+          <div class="connect-links">
+            <a href="https://www.instagram.com/imjw.26/" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <iconify-icon icon="bxl:instagram" aria-hidden="true"></iconify-icon>
+            </a>
+            <a href="https://github.com/imjw0826" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <iconify-icon icon="bxl:github" aria-hidden="true"></iconify-icon>
             </a>
           </div>
-          <div class="card">
-            <h3>What's inside</h3>
-            <ul>
-              <li>Education timeline</li>
-              <li>Technical and soft skills</li>
-              <li>Internships and projects</li>
-              <li>Certifications and awards</li>
-            </ul>
+        </div>
+        <div class="bp-side-footer">
+          © 2026 JUNGWON IM
+        </div>
+
+      </aside>
+
+      <!-- ═══ Main ═══ -->
+      <main class="bp-main">
+
+        <div class="box bp-intro">
+          <p class="intro-first">
+            <span class="drop-cap">H</span>i! Buongiorno, こんにちは, 안녕하세요!
+          </p>
+          <p class="intro-rest">
+            As a Mechanical Engineering student double majoring in Business Administration, I am passionate about combining analytical thinking with creative perspective. Beyond academics, I have a strong interest in film, music, finance, and programming, and I enjoy exploring how these fields connect to innovation, problem-solving, and personal growth.
+          </p>
+          <div class="hero-actions">
+            <a href="projects.html" class="hero-primary">View selected work</a>
+            <a href="contact.html" class="hero-secondary">Get in touch</a>
           </div>
         </div>
-      </section>
 
-      <section id="projects" class="section">
-        <div class="container">
-          <div class="section-header">
+        <div class="home-project-strip">
+          <a href="simulation.html" class="home-project-card">
+            <span class="home-project-tag">SIMULATION</span>
+            <strong>CED Robocon</strong>
+            <span>Interactive browser rehearsal for robot strategy and scoring.</span>
+          </a>
+          <a href="snu-graduate/" class="home-project-card">
+            <span class="home-project-tag">PLANNER</span>
+            <strong>SNU Graduate Tracker</strong>
+            <span>Drag-and-drop course planning tool for degree requirements.</span>
+          </a>
+          <a href="https://movie-checklist-psi.vercel.app/" target="_blank" rel="noreferrer" class="home-project-card">
+            <span class="home-project-tag">WEB APP</span>
+            <strong>Movie Checklist</strong>
+            <span>Minimal watchlist app for logging films to watch and finished titles.</span>
+          </a>
+        </div>
+
+        <div class="box bp-featured">
+          <div class="feat-top">
             <div>
-              <p class="eyebrow">Projects</p>
-              <h2>Interactive pages</h2>
-              <p>
-                직접 열어볼 수 있는 정적 프로젝트들입니다. 메인 사이트에서
-                바로 이동할 수 있도록 연결해 두었습니다.
-              </p>
+              <p class="eyebrow">BLUEPRINT / HOME</p>
+              <p class="feat-headline">Mechanical systems, visual storytelling, and software tools.</p>
+              <p class="feat-sub">A portfolio shaped around engineering logic and creative production.</p>
+            </div>
+            <a href="projects.html" class="bp-link">All projects →</a>
+          </div>
+          <div class="feat-drawing">
+            <svg viewBox="0 0 440 340" preserveAspectRatio="xMidYMid meet">
+              <g class="stack-block" transform="translate(0 0)">
+                <polygon points="78,276 264,276 264,312 78,312" fill="var(--bg)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="78,276 118,248 304,248 264,276" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="264,276 304,248 304,284 264,312" fill="rgba(73,66,250,0.13)" stroke="currentColor" stroke-width="1"/>
+                <text x="171" y="299" font-size="11" font-weight="700" fill="currentColor" text-anchor="middle">HIGH SCHOOL</text>
+              </g>
+              <g class="stack-block" transform="translate(0 -47)">
+                <polygon points="78,276 264,276 264,312 78,312" fill="var(--bg)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="78,276 118,248 304,248 264,276" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="264,276 304,248 304,284 264,312" fill="rgba(73,66,250,0.13)" stroke="currentColor" stroke-width="1"/>
+                <text x="171" y="299" font-size="11" font-weight="700" fill="currentColor" text-anchor="middle">SEOUL NAT'L UNIV.</text>
+              </g>
+              <g class="stack-block" transform="translate(0 -94)">
+                <polygon points="78,276 264,276 264,312 78,312" fill="var(--bg)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="78,276 118,248 304,248 264,276" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="264,276 304,248 304,284 264,312" fill="rgba(73,66,250,0.13)" stroke="currentColor" stroke-width="1"/>
+                <text x="171" y="299" font-size="11" font-weight="700" fill="currentColor" text-anchor="middle">MECHANICAL ENG.</text>
+              </g>
+              <g class="stack-block" transform="translate(0 -141)">
+                <polygon points="78,276 264,276 264,312 78,312" fill="var(--bg)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="78,276 118,248 304,248 264,276" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="264,276 304,248 304,284 264,312" fill="rgba(73,66,250,0.13)" stroke="currentColor" stroke-width="1"/>
+                <text x="171" y="299" font-size="11" font-weight="700" fill="currentColor" text-anchor="middle">CED ROBOCON</text>
+              </g>
+              <g class="stack-block" transform="translate(0 -188)">
+                <polygon points="78,276 264,276 264,312 78,312" fill="var(--bg)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="78,276 118,248 304,248 264,276" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="1"/>
+                <polygon points="264,276 304,248 304,284 264,312" fill="rgba(73,66,250,0.13)" stroke="currentColor" stroke-width="1"/>
+                <text x="171" y="299" font-size="11" font-weight="700" fill="currentColor" text-anchor="middle">FILM &amp; MUSIC</text>
+              </g>
+
+              <g class="stack-notes">
+                <line x1="304" y1="84" x2="348" y2="65" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,2"/>
+                <text x="353" y="63" font-size="9" fill="currentColor">NOW</text>
+                <line x1="304" y1="131" x2="348" y2="118" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,2"/>
+                <text x="353" y="116" font-size="9" fill="currentColor">2024</text>
+                <line x1="304" y1="178" x2="348" y2="171" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,2"/>
+                <text x="353" y="169" font-size="9" fill="currentColor">MAJOR</text>
+                <line x1="304" y1="225" x2="348" y2="224" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,2"/>
+                <text x="353" y="222" font-size="9" fill="currentColor">UNIV.</text>
+                <line x1="304" y1="272" x2="348" y2="277" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,2"/>
+                <text x="353" y="275" font-size="9" fill="currentColor">BASE</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="bp-bottom">
+          <div class="box bp-skills">
+            <p class="box-label">SKILLS</p>
+            <div class="icon-row">
+              <div class="icon-card">
+                <span class="mini-icon"><i data-lucide="code-2" aria-hidden="true"></i></span>
+                <span>C/C++ · PYTHON</span>
+              </div>
+              <div class="icon-card">
+                <span class="mini-icon"><i data-lucide="box" aria-hidden="true"></i></span>
+                <span>FUSION 360</span>
+              </div>
+              <div class="icon-card">
+                <span class="mini-icon"><i data-lucide="calculator" aria-hidden="true"></i></span>
+                <span>ACCOUNTING</span>
+              </div>
+              <div class="icon-card">
+                <span class="mini-icon"><i data-lucide="languages" aria-hidden="true"></i></span>
+                <span>JP · IT</span>
+              </div>
             </div>
           </div>
-          <div class="project-grid">
-            <article class="project-card">
-              <p class="project-tag">Simulation</p>
-              <h3>CED Robocon Simulation</h3>
-              <p>
-                장비 이동과 점수 변화를 바로 실험해볼 수 있는 인터랙티브
-                시뮬레이션입니다.
-              </p>
-              <a class="button tertiary" href="simulation.html">Open</a>
-            </article>
-            <article class="project-card">
-              <p class="project-tag">Planner</p>
-              <h3>SNU Graduate Tracker</h3>
-              <p>
-                이수 학점과 전공 요건을 드래그 앤 드롭으로 정리하는 졸업
-                관리 페이지입니다.
-              </p>
-              <a class="button tertiary" href="snu-graduate/">Open</a>
-            </article>
-            <article class="project-card">
-              <p class="project-tag">Web App</p>
-              <h3>Movie Checklist</h3>
-              <p>
-                보고 싶은 영화와 본 영화를 체크리스트로 관리하는 웹 앱입니다.
-              </p>
-              <a class="button tertiary" href="https://movie-checklist-psi.vercel.app/" target="_blank" rel="noreferrer">Open</a>
-            </article>
-            <article class="project-card">
-              <p class="project-tag">Film</p>
-              <h3>Korean Historic Movie</h3>
-              <p>
-                한국 역사 영화를 아카이브한 프로젝트입니다.
-              </p>
-              <a class="button tertiary" href="https://imjw0826.github.io/korean_historic_movie/" target="_blank" rel="noreferrer">Open</a>
-            </article>
-            <article class="project-card">
-              <p class="project-tag">Web</p>
-              <h3>Chongmu</h3>
-              <p>
-                충무 관련 웹 프로젝트입니다.
-              </p>
-              <a class="button tertiary" href="https://imjw0826.github.io/chongmu/" target="_blank" rel="noreferrer">Open</a>
-            </article>
+          <div class="box bp-hobby">
+            <p class="box-label">HOBBY</p>
+            <div class="icon-row">
+              <div class="icon-card">
+                <span class="mini-icon"><i data-lucide="clapperboard" aria-hidden="true"></i></span>
+                <span>FILM</span>
+              </div>
+              <div class="icon-card">
+                <span class="mini-icon"><i data-lucide="music" aria-hidden="true"></i></span>
+                <span>MUSIC</span>
+              </div>
+              <div class="icon-card">
+                <span class="mini-icon"><i data-lucide="trending-up" aria-hidden="true"></i></span>
+                <span>INVESTING</span>
+              </div>
+              <div class="icon-card">
+                <span class="mini-icon"><i data-lucide="coffee" aria-hidden="true"></i></span>
+                <span>COFFEE</span>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
 
-<section id="contact" class="section accent">
-        <div class="container split">
-          <div>
-            <p class="eyebrow">Get In Touch</p>
-            <h2>Let's connect</h2>
-            <p>
-              Feel free to reach out if you'd like to talk about projects,
-              opportunities, or collaborating on study sessions.
-            </p>
-            <ul class="contact-list">
-              <li>
-                <span class="contact-label">Email</span>
-                <a href="mailto:hello@example.com">hello@example.com</a>
-              </li>
-              <li>
-                <span class="contact-label">LinkedIn</span>
-                <a href="https://www.linkedin.com" target="_blank" rel="noreferrer"
-                  >linkedin.com/in/your-profile</a
-                >
-              </li>
-              <li>
-                <span class="contact-label">GitHub</span>
-                <a href="https://github.com" target="_blank" rel="noreferrer"
-                  >github.com/your-handle</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Office hours</h3>
-            <p>
-              I try to reply to emails within 2–3 days. If it's urgent, please
-              mention it in the subject line.
-            </p>
-            <p class="note">
-              Need a quick overview? Download the CV above or jump into the
-              notes section to see what I'm learning.
-            </p>
+      </main>
+
+      <!-- ═══ Right panel ═══ -->
+      <aside class="bp-right">
+
+        <div class="box bp-currently">
+          <p class="box-label">CURRENTLY</p>
+          <ul>
+            <li>Seoul National University(March 2025 ~ )</li>
+            <li>Mechanical Engineering · Business double major</li>
+            <li>Republic of Korea Air Force (June 2026 ~ )</li>
+          </ul>
+        </div>
+
+        <div class="box bp-career">
+          <p class="box-label">TIMELINE</p>
+          <div class="career-tabs">
+            <input type="radio" id="tab-education" name="career-tab" checked>
+            <input type="radio" id="tab-experience" name="career-tab">
+            <div class="tab-labels">
+              <label for="tab-education">Education</label>
+              <label for="tab-experience">Experience</label>
+            </div>
+            <div class="tab-panel education-panel">
+              <div class="career-line">
+                <div class="career-item">
+                  <span class="career-year">2025 — PRESENT</span>
+                  <h3>Seoul National University</h3>
+                  <p>Mechanical Engineering, College of Engineering</p>
+                  <p>School of Buisness</p>
+                </div>
+                <div class="career-item">
+                  <span class="career-year">2021 - 2024</span>
+                  <h3>High School</h3>
+                  <p>Gyeonggi Science High School</p>
+                  <p>(specialized in the study of mathematics, physics, and programming)</p>
+                </div>
+              </div>
+            </div>
+            <div class="tab-panel experience-panel">
+              <div class="career-line">
+                <div class="career-item">
+                  <span class="career-year">2026</span>
+                  <h3>CED Robocon Simulation</h3>
+                  <p>Built an interactive browser simulation for strategy rehearsal.</p>
+                </div>
+                <div class="career-item">
+                  <span class="career-year">2026</span>
+                  <h3>SNU Graduate Tracker</h3>
+                  <p>Created a credit-planning tool with drag-and-drop course management.</p>
+                </div>
+                <div class="career-item">
+                  <span class="career-year">ONGOING</span>
+                  <h3>Film / Music Archive</h3>
+                  <p>Developing personal work across editing, sound, and production.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-    </main>
 
-    <footer class="site-footer">
-      <div class="container">
-        <p>&copy; <span id="year"></span> [Your Name]. Built with curiosity.</p>
-      </div>
-    </footer>
+        <div class="box bp-portfolio">
+          <p class="box-label">PORTFOLIO</p>
 
-    <script src="assets/js/main.js" defer></script>
+          <!-- ENGINEERING -->
+          <div class="pf-item" style="border-top:none; padding-top:0;">
+            <div class="pf-header">
+              <span>ENGINEERING</span>
+            </div>
+            <div class="pf-body">
+              <div class="pf-thumb">
+                <svg viewBox="0 0 220 100" preserveAspectRatio="xMidYMid meet">
+                  <!-- mounting base (isometric) -->
+                  <polygon points="24,82 196,82 208,72 36,72" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="0.8"/>
+                  <polygon points="24,82 24,90 196,90 196,82" fill="rgba(73,66,250,0.02)" stroke="currentColor" stroke-width="0.8"/>
+                  <polygon points="196,82 208,72 208,80 196,90" fill="rgba(73,66,250,0.14)" stroke="currentColor" stroke-width="0.8"/>
+                  <!-- base bolts -->
+                  <circle cx="36" cy="77" r="2.5" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                  <circle cx="36" cy="77" r="1" fill="currentColor"/>
+                  <circle cx="184" cy="77" r="2.5" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                  <circle cx="184" cy="77" r="1" fill="currentColor"/>
+
+                  <!-- main gear -->
+                  <g transform="translate(110 48)">
+                    <polygon points="28,0 26.5,4 24.3,7 21.2,9.5 17,10.5 13,13 10,15 5.5,15.5 2,17 -2,17 -5.5,15.5 -10,15 -13,13 -17,10.5 -21.2,9.5 -24.3,7 -26.5,4 -28,0 -26.5,-4 -24.3,-7 -21.2,-9.5 -17,-10.5 -13,-13 -10,-15 -5.5,-15.5 -2,-17 2,-17 5.5,-15.5 10,-15 13,-13 17,-10.5 21.2,-9.5 24.3,-7 26.5,-4" fill="rgba(73,66,250,0.1)" stroke="currentColor" stroke-width="0.8"/>
+                    <circle r="21" fill="var(--bg)" stroke="currentColor" stroke-width="0.6"/>
+                    <circle r="16" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                    <circle r="4" fill="currentColor"/>
+                    <!-- spokes -->
+                    <line x1="-16" y1="0" x2="-4" y2="0" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="16" y1="0" x2="4" y2="0" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="-16" x2="0" y2="-4" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="16" x2="0" y2="4" stroke="currentColor" stroke-width="0.5"/>
+                  </g>
+
+                  <!-- left small gear -->
+                  <g transform="translate(50 55)">
+                    <polygon points="14,0 13,2.8 10.4,5.2 6.8,7 2.7,7.7 -2.7,7.7 -6.8,7 -10.4,5.2 -13,2.8 -14,0 -13,-2.8 -10.4,-5.2 -6.8,-7 -2.7,-7.7 2.7,-7.7 6.8,-7 10.4,-5.2 13,-2.8" fill="rgba(73,66,250,0.1)" stroke="currentColor" stroke-width="0.7"/>
+                    <circle r="10" fill="var(--bg)" stroke="currentColor" stroke-width="0.5"/>
+                    <circle r="2.5" fill="currentColor"/>
+                    <line x1="-7" y1="0" x2="7" y2="0" stroke="currentColor" stroke-width="0.4"/>
+                    <line x1="0" y1="-7" x2="0" y2="7" stroke="currentColor" stroke-width="0.4"/>
+                  </g>
+
+                  <!-- right small gear -->
+                  <g transform="translate(168 56)">
+                    <polygon points="12,0 11.2,2.4 9,4.5 5.8,6 2.3,6.6 -2.3,6.6 -5.8,6 -9,4.5 -11.2,2.4 -12,0 -11.2,-2.4 -9,-4.5 -5.8,-6 -2.3,-6.6 2.3,-6.6 5.8,-6 9,-4.5 11.2,-2.4" fill="rgba(73,66,250,0.1)" stroke="currentColor" stroke-width="0.7"/>
+                    <circle r="8.5" fill="var(--bg)" stroke="currentColor" stroke-width="0.5"/>
+                    <circle r="2" fill="currentColor"/>
+                  </g>
+
+                  <!-- exploded shaft -->
+                  <line x1="110" y1="48" x2="110" y2="18" stroke="currentColor" stroke-width="0.6" stroke-dasharray="3,2"/>
+                  <rect x="105" y="10" width="10" height="8" fill="rgba(73,66,250,0.1)" stroke="currentColor" stroke-width="0.6"/>
+                  <rect x="107" y="12" width="6" height="4" fill="currentColor"/>
+
+                  <!-- annotations -->
+                  <line x1="90" y1="38" x2="68" y2="22" stroke="currentColor" stroke-width="0.3" stroke-dasharray="2,2"/>
+                  <text x="18" y="20" font-family="HsSantoki20" font-size="6.5" letter-spacing="0.06em" fill="currentColor">SPUR GEAR</text>
+                  <line x1="176" y1="50" x2="200" y2="40" stroke="currentColor" stroke-width="0.3" stroke-dasharray="2,2"/>
+                  <text x="178" y="38" font-family="HsSantoki20" font-size="6.5" letter-spacing="0.06em" fill="currentColor">PINION</text>
+                  <line x1="110" y1="18" x2="130" y2="10" stroke="currentColor" stroke-width="0.3" stroke-dasharray="2,2"/>
+                  <text x="133" y="9" font-family="HsSantoki20" font-size="6.5" letter-spacing="0.06em" fill="currentColor">HUB</text>
+                </svg>
+              </div>
+              <ul>
+                <li>Machine Design</li>
+                <li>CAD / CAE</li>
+                <li>Prototyping</li>
+                <li>Robotics</li>
+              </ul>
+            </div>
+            <a href="projects.html" class="pf-link">VIEW PROJECTS →</a>
+          </div>
+
+          <!-- FILM -->
+          <div class="pf-item">
+            <div class="pf-header">
+              <span>FILM</span>
+            </div>
+            <div class="pf-body">
+              <div class="pf-thumb">
+                <svg viewBox="0 0 220 100" preserveAspectRatio="xMidYMid meet">
+                  <!-- camera body -->
+                  <rect x="55" y="36" width="120" height="50" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="0.8"/>
+                  <!-- body seam -->
+                  <line x1="55" y1="72" x2="175" y2="72" stroke="currentColor" stroke-width="0.3"/>
+
+                  <!-- grip -->
+                  <rect x="160" y="36" width="15" height="50" fill="rgba(73,66,250,0.12)" stroke="currentColor" stroke-width="0.6"/>
+                  <line x1="162" y1="42" x2="173" y2="42" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="162" y1="48" x2="173" y2="48" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="162" y1="54" x2="173" y2="54" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="162" y1="60" x2="173" y2="60" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="162" y1="66" x2="173" y2="66" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="162" y1="72" x2="173" y2="72" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="162" y1="78" x2="173" y2="78" stroke="currentColor" stroke-width="0.3"/>
+
+                  <!-- pentaprism -->
+                  <polygon points="82,36 96,18 124,18 138,36" fill="rgba(73,66,250,0.1)" stroke="currentColor" stroke-width="0.8"/>
+                  <!-- hot shoe -->
+                  <rect x="102" y="16" width="16" height="3" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                  <line x1="110" y1="16" x2="110" y2="12" stroke="currentColor" stroke-width="0.6"/>
+
+                  <!-- mode dial (left top) -->
+                  <circle cx="72" cy="30" r="6" fill="none" stroke="currentColor" stroke-width="0.6"/>
+                  <circle cx="72" cy="30" r="4.5" fill="rgba(73,66,250,0.05)" stroke="currentColor" stroke-width="0.3"/>
+                  <circle cx="72" cy="30" r="1.2" fill="currentColor"/>
+                  <line x1="72" y1="24" x2="72" y2="26" stroke="currentColor" stroke-width="0.4"/>
+                  <line x1="72" y1="34" x2="72" y2="36" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="66" y1="30" x2="68" y2="30" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="76" y1="30" x2="78" y2="30" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="68" y1="26" x2="69.5" y2="27.5" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="76" y1="26" x2="74.5" y2="27.5" stroke="currentColor" stroke-width="0.3"/>
+
+                  <!-- shutter button -->
+                  <circle cx="152" cy="30" r="3.5" fill="currentColor"/>
+                  <circle cx="152" cy="30" r="5.5" fill="none" stroke="currentColor" stroke-width="0.5"/>
+
+                  <!-- lens mount collar -->
+                  <rect x="58" y="50" width="24" height="24" fill="none" stroke="currentColor" stroke-width="0.6"/>
+                  <!-- lens body -->
+                  <rect x="16" y="44" width="42" height="36" fill="rgba(73,66,250,0.06)" stroke="currentColor" stroke-width="0.8"/>
+                  <!-- zoom ring -->
+                  <line x1="16" y1="52" x2="58" y2="52" stroke="currentColor" stroke-width="0.5"/>
+                  <line x1="16" y1="72" x2="58" y2="72" stroke="currentColor" stroke-width="0.4"/>
+                  <!-- focus marks -->
+                  <line x1="24" y1="46" x2="24" y2="50" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="32" y1="46" x2="32" y2="50" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="40" y1="46" x2="40" y2="50" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="48" y1="46" x2="48" y2="50" stroke="currentColor" stroke-width="0.3"/>
+                  <!-- aperture marks -->
+                  <line x1="20" y1="75" x2="20" y2="77" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="28" y1="75" x2="28" y2="77" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="36" y1="75" x2="36" y2="77" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="44" y1="75" x2="44" y2="77" stroke="currentColor" stroke-width="0.3"/>
+                  <line x1="52" y1="75" x2="52" y2="77" stroke="currentColor" stroke-width="0.3"/>
+
+                  <!-- lens front element -->
+                  <circle cx="27" cy="62" r="16" fill="none" stroke="currentColor" stroke-width="0.8"/>
+                  <circle cx="27" cy="62" r="12" fill="rgba(73,66,250,0.1)" stroke="currentColor" stroke-width="0.5"/>
+                  <circle cx="27" cy="62" r="7" fill="rgba(73,66,250,0.28)" stroke="currentColor" stroke-width="0.3"/>
+                  <ellipse cx="24" cy="58" rx="2.5" ry="3.5" fill="rgba(255,255,255,0.7)"/>
+
+                  <!-- brand plate -->
+                  <rect x="90" y="54" width="45" height="8" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                  <text x="112.5" y="60" font-family="HsSantoki20" font-size="5.5" letter-spacing="0.2em" fill="currentColor" text-anchor="middle">CINEMA</text>
+
+                  <!-- light meter -->
+                  <rect x="88" y="74" width="50" height="6" fill="rgba(73,66,250,0.05)" stroke="currentColor" stroke-width="0.3"/>
+                  <rect x="89" y="75" width="4" height="4" fill="currentColor"/>
+                  <rect x="94" y="75" width="4" height="4" fill="currentColor"/>
+                  <rect x="99" y="75" width="4" height="4" fill="currentColor" opacity="0.5"/>
+
+                  <!-- strap rings -->
+                  <circle cx="55" cy="42" r="2" fill="none" stroke="currentColor" stroke-width="0.4"/>
+                  <circle cx="175" cy="42" r="2" fill="none" stroke="currentColor" stroke-width="0.4"/>
+
+                  <!-- annotation -->
+                  <line x1="27" y1="46" x2="27" y2="30" stroke="currentColor" stroke-width="0.3" stroke-dasharray="2,2"/>
+                  <text x="6" y="28" font-family="HsSantoki20" font-size="6.5" letter-spacing="0.06em" fill="currentColor">50MM F/1.8</text>
+                  <line x1="110" y1="18" x2="110" y2="8" stroke="currentColor" stroke-width="0.3" stroke-dasharray="2,2"/>
+                  <text x="115" y="7" font-family="HsSantoki20" font-size="6.5" letter-spacing="0.06em" fill="currentColor">VIEWFINDER</text>
+                </svg>
+              </div>
+              <ul>
+                <li>Short Films</li>
+                <li>Cinematography</li>
+                <li>Editing</li>
+                <li>Color Grading</li>
+              </ul>
+            </div>
+            <a href="projects.html" class="pf-link">VIEW FILMS →</a>
+          </div>
+
+          <!-- MUSIC -->
+          <div class="pf-item">
+            <div class="pf-header">
+              <span>MUSIC</span>
+            </div>
+            <div class="pf-body">
+              <div class="pf-thumb">
+                <svg viewBox="0 0 220 100" preserveAspectRatio="xMidYMid meet">
+                  <!-- console base -->
+                  <rect x="10" y="14" width="200" height="76" rx="3" fill="rgba(73,66,250,0.03)" stroke="currentColor" stroke-width="0.8"/>
+                  <!-- divider -->
+                  <line x1="162" y1="20" x2="162" y2="84" stroke="currentColor" stroke-width="0.4"/>
+
+                  <!-- Channel strips (5) -->
+                  <!-- helper label positions: y=24 label, y=30-54 knobs, y=58-70 VU, y=72-82 fader -->
+
+                  <!-- CH1 -->
+                  <g transform="translate(32 0)">
+                    <text x="0" y="22" font-family="HsSantoki20" font-size="5.5" letter-spacing="0.08em" fill="currentColor" text-anchor="middle">CH1</text>
+                    <circle cx="0" cy="30" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="30" x2="2" y2="28" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="42" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="42" x2="-2" y2="40" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="54" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="54" x2="2" y2="52" stroke="currentColor" stroke-width="0.7"/>
+                    <rect x="-4" y="62" width="8" height="14" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="0.4"/>
+                    <rect x="-3" y="70" width="6" height="5" fill="rgba(73,66,250,0.45)"/>
+                    <line x1="0" y1="80" x2="0" y2="86" stroke="currentColor" stroke-width="0.5"/>
+                    <rect x="-4" y="81" width="8" height="3" fill="currentColor"/>
+                  </g>
+                  <!-- CH2 -->
+                  <g transform="translate(58 0)">
+                    <text x="0" y="22" font-family="HsSantoki20" font-size="5.5" letter-spacing="0.08em" fill="currentColor" text-anchor="middle">CH2</text>
+                    <circle cx="0" cy="30" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="30" x2="-2" y2="28" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="42" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="42" x2="3" y2="42" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="54" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="54" x2="-2" y2="56" stroke="currentColor" stroke-width="0.7"/>
+                    <rect x="-4" y="62" width="8" height="14" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="0.4"/>
+                    <rect x="-3" y="66" width="6" height="9" fill="rgba(73,66,250,0.45)"/>
+                    <line x1="0" y1="80" x2="0" y2="86" stroke="currentColor" stroke-width="0.5"/>
+                    <rect x="-4" y="83" width="8" height="3" fill="currentColor"/>
+                  </g>
+                  <!-- CH3 -->
+                  <g transform="translate(84 0)">
+                    <text x="0" y="22" font-family="HsSantoki20" font-size="5.5" letter-spacing="0.08em" fill="currentColor" text-anchor="middle">CH3</text>
+                    <circle cx="0" cy="30" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="30" x2="2" y2="28" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="42" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="42" x2="-3" y2="41" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="54" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="54" x2="2" y2="56" stroke="currentColor" stroke-width="0.7"/>
+                    <rect x="-4" y="62" width="8" height="14" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="0.4"/>
+                    <rect x="-3" y="64" width="6" height="11" fill="rgba(73,66,250,0.55)"/>
+                    <line x1="0" y1="80" x2="0" y2="86" stroke="currentColor" stroke-width="0.5"/>
+                    <rect x="-4" y="80" width="8" height="3" fill="currentColor"/>
+                  </g>
+                  <!-- CH4 -->
+                  <g transform="translate(110 0)">
+                    <text x="0" y="22" font-family="HsSantoki20" font-size="5.5" letter-spacing="0.08em" fill="currentColor" text-anchor="middle">CH4</text>
+                    <circle cx="0" cy="30" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="30" x2="-1" y2="28" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="42" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="42" x2="3" y2="42" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="54" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="54" x2="-2" y2="55" stroke="currentColor" stroke-width="0.7"/>
+                    <rect x="-4" y="62" width="8" height="14" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="0.4"/>
+                    <rect x="-3" y="72" width="6" height="3" fill="rgba(73,66,250,0.35)"/>
+                    <line x1="0" y1="80" x2="0" y2="86" stroke="currentColor" stroke-width="0.5"/>
+                    <rect x="-4" y="85" width="8" height="3" fill="currentColor"/>
+                  </g>
+                  <!-- CH5 -->
+                  <g transform="translate(136 0)">
+                    <text x="0" y="22" font-family="HsSantoki20" font-size="5.5" letter-spacing="0.08em" fill="currentColor" text-anchor="middle">CH5</text>
+                    <circle cx="0" cy="30" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="30" x2="2" y2="28" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="42" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="42" x2="-3" y2="42" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="54" r="3.5" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.5"/>
+                    <line x1="0" y1="54" x2="2" y2="52" stroke="currentColor" stroke-width="0.7"/>
+                    <rect x="-4" y="62" width="8" height="14" fill="rgba(73,66,250,0.04)" stroke="currentColor" stroke-width="0.4"/>
+                    <rect x="-3" y="67" width="6" height="8" fill="rgba(73,66,250,0.45)"/>
+                    <line x1="0" y1="80" x2="0" y2="86" stroke="currentColor" stroke-width="0.5"/>
+                    <rect x="-4" y="82" width="8" height="3" fill="currentColor"/>
+                  </g>
+
+                  <!-- MASTER -->
+                  <g transform="translate(186 0)">
+                    <text x="0" y="22" font-family="HsSantoki20" font-size="5.5" letter-spacing="0.12em" fill="currentColor" text-anchor="middle">MASTER</text>
+                    <!-- big knob -->
+                    <circle cx="0" cy="38" r="10" fill="rgba(73,66,250,0.08)" stroke="currentColor" stroke-width="0.7"/>
+                    <circle cx="0" cy="38" r="7" fill="var(--bg)" stroke="currentColor" stroke-width="0.4"/>
+                    <line x1="0" y1="38" x2="3.5" y2="34" stroke="currentColor" stroke-width="1"/>
+                    <!-- tick marks -->
+                    <line x1="0" y1="27" x2="0" y2="25" stroke="currentColor" stroke-width="0.4"/>
+                    <line x1="-7.5" y1="31" x2="-9" y2="29.5" stroke="currentColor" stroke-width="0.3"/>
+                    <line x1="7.5" y1="31" x2="9" y2="29.5" stroke="currentColor" stroke-width="0.3"/>
+                    <line x1="-11" y1="38" x2="-13" y2="38" stroke="currentColor" stroke-width="0.3"/>
+                    <line x1="11" y1="38" x2="13" y2="38" stroke="currentColor" stroke-width="0.3"/>
+                    <line x1="-7.5" y1="45" x2="-9" y2="46.5" stroke="currentColor" stroke-width="0.3"/>
+                    <line x1="7.5" y1="45" x2="9" y2="46.5" stroke="currentColor" stroke-width="0.3"/>
+                    <!-- LED stack -->
+                    <rect x="-7" y="54" width="14" height="22" fill="var(--bg)" stroke="currentColor" stroke-width="0.4"/>
+                    <rect x="-6" y="55" width="12" height="2.2" fill="rgba(73,66,250,0.7)"/>
+                    <rect x="-6" y="58" width="12" height="2.2" fill="rgba(73,66,250,0.55)"/>
+                    <rect x="-6" y="61" width="12" height="2.2" fill="rgba(73,66,250,0.4)"/>
+                    <rect x="-6" y="64" width="12" height="2.2" fill="rgba(73,66,250,0.3)"/>
+                    <rect x="-6" y="67" width="12" height="2.2" fill="rgba(73,66,250,0.2)"/>
+                    <rect x="-6" y="70" width="12" height="2.2" fill="rgba(73,66,250,0.1)"/>
+                    <rect x="-6" y="73" width="12" height="2.2" fill="rgba(73,66,250,0.05)"/>
+                  </g>
+                </svg>
+              </div>
+              <ul>
+                <li>Ambient / Electronic</li>
+                <li>Sound Design</li>
+                <li>Mixing / Mastering</li>
+              </ul>
+            </div>
+            <a href="contact.html" class="pf-link">LISTEN NOW →</a>
+          </div>
+        </div>
+
+        <div class="box bp-cta">
+          <p class="cta-headline">Let's create something meaningful.</p>
+          <p>I'm always open to collaborating on projects in engineering, film, or music.</p>
+          <a href="contact.html" class="bp-link">Get in touch →</a>
+        </div>
+
+      </aside>
+
+    </div>
+    <script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
   </body>
 </html>

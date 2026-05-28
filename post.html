@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Post — Blueprint</title>
+    <meta name="description" content="A markdown post by Jungwon Im." />
+    <link rel="stylesheet" href="assets/css/home.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/github.min.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)']],
+          displayMath: [['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+  </head>
+  <body>
+    <div class="bp">
+      <aside class="bp-side">
+        <div class="box bp-name">
+          <h1>Jungwon Im</h1>
+        </div>
+
+        <nav class="box bp-nav">
+          <ul>
+            <li><a href="index.html">
+              <i class="nav-icon" data-lucide="house" aria-hidden="true"></i> HOME
+            </a></li>
+            <li><a href="projects.html">
+              <i class="nav-icon" data-lucide="folder-git-2" aria-hidden="true"></i> PROJECTS
+            </a></li>
+            <li><a href="blog.html">
+              <i class="nav-icon" data-lucide="file-pen" aria-hidden="true"></i> BLOG
+            </a></li>
+            <li><a href="contact.html">
+              <i class="nav-icon" data-lucide="circle-user" aria-hidden="true"></i> CONTACT
+            </a></li>
+          </ul>
+        </nav>
+
+        <div class="box bp-connect">
+          <div class="connect-label">CONNECT</div>
+          <div class="connect-links">
+            <a href="https://www.instagram.com/imjw.26/" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <iconify-icon icon="bxl:instagram" aria-hidden="true"></iconify-icon>
+            </a>
+            <a href="https://github.com/imjw0826" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <iconify-icon icon="bxl:github" aria-hidden="true"></iconify-icon>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <main class="bp-main">
+        <article class="box" style="flex:1;">
+          <header class="post-header">
+            <p class="eyebrow">POST / MARKDOWN</p>
+            <h1 class="post-title" id="post-title">Loading post.</h1>
+            <div class="post-meta" id="post-meta"></div>
+          </header>
+          <div class="markdown" id="post-content">
+            <p>Loading markdown file.</p>
+          </div>
+        </article>
+      </main>
+
+      <aside class="bp-right">
+        <div class="box">
+          <p class="box-label">SOURCE</p>
+          <p style="font-family:var(--serif); font-size:14px; line-height:1.7; color:var(--ink);">
+            This page fetches a markdown file from the <code>posts</code> folder, converts it in the browser, and renders the result here.
+          </p>
+        </div>
+        <div class="box">
+          <p class="box-label">TESTED MARKDOWN</p>
+          <div class="cat-list">
+            <span class="cat-chip">TABLE</span>
+            <span class="cat-chip">IMAGE</span>
+            <span class="cat-chip">CODE</span>
+            <span class="cat-chip">QUOTE</span>
+            <span class="cat-chip">MATH</span>
+          </div>
+        </div>
+        <div class="box" style="flex:1;">
+          <p class="box-label">BACK</p>
+          <a href="blog.html" class="bp-link">Back to blog →</a>
+        </div>
+      </aside>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/lib/common.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+      const escapeHtml = (value) =>
+        String(value).replace(/[&<>"']/g, (char) => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        })[char]);
+
+      const resolvePost = async () => {
+        const params = new URLSearchParams(window.location.search);
+        const slug = params.get('slug') || 'markdown-test';
+        let meta = {
+          slug,
+          title: slug.replace(/-/g, ' '),
+          date: '',
+          tags: []
+        };
+
+        const indexRes = await fetch('posts/index.json', { cache: 'no-store' });
+        if (indexRes.ok) {
+          const posts = await indexRes.json();
+          meta = posts.find((post) => post.slug === slug) || posts[0] || meta;
+        }
+
+        const mdRes = await fetch(`posts/${meta.slug}.md`, { cache: 'no-store' });
+        if (!mdRes.ok) {
+          throw new Error(`Could not fetch posts/${meta.slug}.md`);
+        }
+        const markdown = await mdRes.text();
+
+        document.title = `${meta.title} — Blueprint`;
+        document.getElementById('post-title').textContent = meta.title;
+        document.getElementById('post-meta').innerHTML =
+          `<span>${escapeHtml(meta.date)}</span><span>${escapeHtml((meta.tags || []).join(' · '))}</span>`;
+
+        if (window.marked) {
+          marked.setOptions({
+            gfm: true,
+            breaks: false
+          });
+          document.getElementById('post-content').innerHTML = marked.parse(markdown);
+        } else {
+          document.getElementById('post-content').innerHTML =
+            `<pre><code>${escapeHtml(markdown)}</code></pre>`;
+        }
+
+        if (window.hljs) {
+          document.querySelectorAll('#post-content pre code').forEach((block) => {
+            hljs.highlightElement(block);
+          });
+        }
+
+        if (window.MathJax) {
+          await MathJax.typesetPromise([document.getElementById('post-content')]);
+        }
+      };
+
+      resolvePost().catch((error) => {
+        document.getElementById('post-title').textContent = 'Could not load post.';
+        document.getElementById('post-content').innerHTML =
+          `<p>Post loading failed: ${escapeHtml(error.message)}</p>`;
+      });
+
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

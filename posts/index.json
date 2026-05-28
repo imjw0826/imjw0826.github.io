@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "markdown-test",
+    "title": "Markdown Rendering Test",
+    "date": "2026-04-23",
+    "tags": ["markdown", "test", "design"],
+    "excerpt": "마크다운 본문이 실제 포스트 페이지에서 표, 이미지, 코드, 인용문, 수식까지 렌더링되는지 확인하는 테스트 글입니다."
+  }
+]

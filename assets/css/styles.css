@@ -1,11 +1,11 @@
 :root {
-  --background: #f5f7fb;
+  --background: #fbfbfb;
   --surface: #ffffff;
   --surface-accent: #eef2ff;
   --text: #1f2933;
   --text-muted: #52606d;
-  --primary: #4c6ef5;
-  --primary-dark: #3b5bdb;
+  --primary: #4942fa;
+  --primary-dark: #3a34d4;
   --secondary: #8898aa;
   --border: #d5d9e2;
   --shadow: 0 12px 30px rgba(15, 35, 95, 0.08);
@@ -25,6 +25,7 @@ body {
   background: var(--background);
   color: var(--text);
   line-height: 1.6;
+  scrollbar-gutter: stable;
 }
 
 a {
@@ -84,7 +85,8 @@ img {
 }
 
 .site-nav a:hover,
-.site-nav a:focus-visible {
+.site-nav a:focus-visible,
+.site-nav a.active {
   color: var(--primary);
   text-decoration: none;
 }
