@@ -21,9 +21,6 @@
   --color-business-bg: #dcc29f;
   --color-business-border: #b28956;
   --color-business-text: #3e2d1c;
-  --color-aesthetics-bg: #e6dfe8;
-  --color-aesthetics-border: #8f7897;
-  --color-aesthetics-text: #403148;
   --color-cross-bg: #dfe9e3;
   --color-cross-border: #7c9686;
   --color-cross-text: #244335;
@@ -230,10 +227,6 @@ select {
   --ring-color: var(--color-business-border);
 }
 
-.progress-ring.aesthetics {
-  --ring-color: var(--color-aesthetics-border);
-}
-
 .progress-ring-inner {
   width: 70%;
   height: 70%;
@@ -422,12 +415,6 @@ select {
   background: var(--color-business-bg);
   border-color: var(--color-business-border);
   color: var(--color-business-text);
-}
-
-.course-card.aesthetics {
-  background: var(--color-aesthetics-bg);
-  border-color: var(--color-aesthetics-border);
-  color: var(--color-aesthetics-text);
 }
 
 .course-card.cross {

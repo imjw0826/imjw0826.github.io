@@ -4,13 +4,12 @@
     "department": "서울대학교 공과대학 기계공학부",
     "studentName": "임정원",
     "studentId": "2025-19994",
-    "programSummary": "기계공학 주전공 · 경영학 복수전공 · 미학과 부전공",
+    "programSummary": "기계공학 주전공 · 경영학 복수전공",
     "totalCreditsRequired": 130,
     "requirements": {
       "generalEducation": 49,
       "mechanicalEngineering": 62,
-      "businessAdministration": 39,
-      "aestheticsMinor": 21
+      "businessAdministration": 39
     }
   },
   "courses": [
