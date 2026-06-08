@@ -10,6 +10,7 @@
   <div class="project-topbar">
     <a class="project-topbar-link" href="../index.html">Garden home</a>
     <div class="project-topbar-links">
+      <span class="sync-status local" id="sync-status">Local mode</span>
       <span class="project-topbar-current">SNU Graduate Tracker</span>
     </div>
   </div>
@@ -141,7 +142,16 @@
       meta: null,
       courses: [],
       currentFilter: 'all',
-      draggedCourseId: null
+      draggedCourseId: null,
+      remote: {
+        enabled: false,
+        ready: false,
+        applyingRemote: false,
+        docRef: null,
+        setDoc: null,
+        serverTimestamp: null,
+        unsubscribe: null
+      }
     };
 
     function createUid() {
@@ -179,8 +189,40 @@
       return sumCredits(courses.filter(course => course.category === category));
     }
 
-    function saveCourses() {
+    function saveLocalCourses() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state.courses));
+    }
+
+    function updateSyncStatus(text, mode = 'local') {
+      const status = document.getElementById('sync-status');
+      status.textContent = text;
+      status.className = `sync-status ${mode}`;
+    }
+
+    async function persistCourses() {
+      saveLocalCourses();
+
+      if (!state.remote.enabled || !state.remote.ready || state.remote.applyingRemote) {
+        updateSyncStatus('Local saved', 'local');
+        return;
+      }
+
+      updateSyncStatus('Syncing...', 'syncing');
+
+      try {
+        await state.remote.setDoc(state.remote.docRef, {
+          courses: state.courses,
+          updatedAt: state.remote.serverTimestamp()
+        }, { merge: true });
+        updateSyncStatus('Cloud saved', 'online');
+      } catch (error) {
+        console.warn('Firestore save failed. Local copy was kept.', error);
+        updateSyncStatus('Cloud offline · local saved', 'local');
+      }
+    }
+
+    function saveCourses() {
+      void persistCourses();
     }
 
     function loadStoredCourses() {
@@ -193,6 +235,62 @@
         return parsed.map(normalizeCourse);
       } catch {
         return null;
+      }
+    }
+
+    async function initFirebaseSync(seedCourses) {
+      try {
+        const configModule = await import('./firebase-config.js');
+        const firebaseSettings = configModule.firebaseSettings || {};
+        const firebaseConfig = configModule.firebaseConfig || {};
+        const isConfigured = Boolean(firebaseSettings.enabled && firebaseConfig.apiKey && !String(firebaseConfig.apiKey).includes('YOUR_'));
+
+        if (!isConfigured) {
+          updateSyncStatus('Local mode', 'local');
+          return;
+        }
+
+        const [{ initializeApp }, firestore] = await Promise.all([
+          import('https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js'),
+          import('https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js')
+        ]);
+
+        const app = initializeApp(firebaseConfig);
+        const db = firestore.getFirestore(app);
+        const collectionPath = firebaseSettings.collectionPath || 'snuGraduateTrackers';
+        const documentId = firebaseSettings.documentId || 'default';
+
+        state.remote.enabled = true;
+        state.remote.ready = true;
+        state.remote.docRef = firestore.doc(db, collectionPath, documentId);
+        state.remote.setDoc = firestore.setDoc;
+        state.remote.serverTimestamp = firestore.serverTimestamp;
+
+        updateSyncStatus('Connecting...', 'syncing');
+
+        state.remote.unsubscribe = firestore.onSnapshot(state.remote.docRef, snapshot => {
+          const data = snapshot.data();
+
+          if (!snapshot.exists() || !Array.isArray(data.courses)) {
+            state.courses = seedCourses.map(normalizeCourse);
+            void persistCourses();
+            return;
+          }
+
+          state.remote.applyingRemote = true;
+          state.courses = data.courses.map(normalizeCourse);
+          saveLocalCourses();
+          renderAll();
+          setFilter(state.currentFilter);
+          state.remote.applyingRemote = false;
+          updateSyncStatus('Cloud synced', 'online');
+        }, error => {
+          console.warn('Firestore listener failed. Local copy remains available.', error);
+          updateSyncStatus('Cloud offline · local saved', 'local');
+        });
+      } catch (error) {
+        console.warn('Firebase sync is not configured or could not start.', error);
+        updateSyncStatus('Local mode', 'local');
       }
     }
 
@@ -502,11 +600,13 @@
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json();
       })
-      .then(data => {
+      .then(async data => {
         state.meta = data.meta;
-        state.courses = loadStoredCourses() || data.courses.map(normalizeCourse);
+        const seedCourses = loadStoredCourses() || data.courses.map(normalizeCourse);
+        state.courses = seedCourses;
         renderAll();
         setFilter('all');
+        await initFirebaseSync(seedCourses);
       })
       .catch(error => {
         document.getElementById('curriculum-grid').innerHTML = `
