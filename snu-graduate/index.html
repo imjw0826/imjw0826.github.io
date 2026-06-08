@@ -10,7 +10,6 @@
   <div class="project-topbar">
     <a class="project-topbar-link" href="../index.html">Garden home</a>
     <div class="project-topbar-links">
-      <span class="sync-status local" id="sync-status">Local mode</span>
       <span class="project-topbar-current">SNU Graduate Tracker</span>
     </div>
   </div>
@@ -19,7 +18,7 @@
     <div class="header-top">
       <div class="header-title">
         <span class="header-university" id="header-university"></span>
-        <h1 class="header-department" id="header-title">로딩 중…</h1>
+        <h1 class="header-department" id="header-title"></h1>
         <span class="header-subtitle" id="header-subtitle"></span>
       </div>
 
@@ -27,12 +26,12 @@
         <div class="total-summary">
           <div class="summary-item">
             <span class="summary-label">이수학점</span>
-            <strong class="summary-value" id="credit-count">0</strong>
+            <strong class="summary-value" id="credit-count"></strong>
           </div>
           <div class="summary-divider"></div>
           <div class="summary-item">
             <span class="summary-label">채워야 할 학점</span>
-            <strong class="summary-value" id="credit-required">0</strong>
+            <strong class="summary-value" id="credit-required"></strong>
           </div>
         </div>
         <div class="credit-progress-bar" aria-label="total credit progress">
@@ -46,12 +45,15 @@
   <nav class="filter-bar">
     <div class="filter-controls">
       <span class="filter-label">Filter</span>
+      <span class="sync-status syncing" id="sync-status" role="status" aria-live="polite">
+        <span class="sync-check" aria-hidden="true">✓</span>
+        <span class="sync-text">Cloud sync</span>
+      </span>
       <button class="filter-btn active" data-filter="all">전체</button>
       <button class="filter-btn" data-filter="교양">교양</button>
       <button class="filter-btn" data-filter="기계공학 전공">기계공학 전공</button>
       <button class="filter-btn" data-filter="경영학 전공">경영학 전공</button>
       <button class="filter-btn" data-filter="타 학과 전공">타 학과 전공</button>
-      <button class="filter-btn" data-filter="일반선택">일반선택</button>
     </div>
 
     <button class="trash-dropzone" id="trash-dropzone" type="button" aria-label="drag here to delete">
@@ -60,9 +62,7 @@
     </button>
   </nav>
 
-  <main class="curriculum-grid" id="curriculum-grid">
-    <div class="state-message">courses.json을 불러오는 중…</div>
-  </main>
+  <main class="curriculum-grid" id="curriculum-grid"></main>
 
   <div class="modal-backdrop hidden" id="course-modal-backdrop">
     <div class="course-modal" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
@@ -104,7 +104,6 @@
               <option value="기계공학 전공">기계공학 전공</option>
               <option value="경영학 전공">경영학 전공</option>
               <option value="타 학과 전공">타 학과 전공</option>
-              <option value="일반선택">일반선택</option>
             </select>
           </label>
         </div>
@@ -119,7 +118,7 @@
 
   <script>
     const STORAGE_KEY = 'snu-graduate-courses-v3';
-    const supportedCategories = ['교양', '기계공학 전공', '경영학 전공', '타 학과 전공', '일반선택'];
+    const supportedCategories = ['교양', '기계공학 전공', '경영학 전공', '타 학과 전공'];
     const semesterPlan = [
       { year: 1, semester: 1, label: '25년도 1학기' },
       { year: 1, semester: 2, label: '25년도 2학기' },
@@ -134,8 +133,7 @@
       '교양': 'ge',
       '기계공학 전공': 'mech',
       '경영학 전공': 'business',
-      '타 학과 전공': 'cross',
-      '일반선택': 'elective'
+      '타 학과 전공': 'cross'
     };
 
     const state = {
@@ -168,7 +166,7 @@
         year: Number(course.year),
         semester: Number(course.semester),
         credits: Number(course.credits),
-        category: supportedCategories.includes(course.category) ? course.category : '일반선택'
+        category: supportedCategories.includes(course.category) ? course.category : '교양'
       };
     }
 
@@ -195,7 +193,12 @@
 
     function updateSyncStatus(text, mode = 'local') {
       const status = document.getElementById('sync-status');
-      status.textContent = text;
+      const textNode = status.querySelector('.sync-text');
+      if (textNode) {
+        textNode.textContent = text;
+      } else {
+        status.textContent = text;
+      }
       status.className = `sync-status ${mode}`;
     }
 
@@ -238,6 +241,25 @@
       }
     }
 
+    async function renderSyncedCourses(courses) {
+      state.remote.applyingRemote = true;
+      state.courses = courses.map(normalizeCourse);
+      saveLocalCourses();
+      renderAll();
+      setFilter(state.currentFilter);
+      state.remote.applyingRemote = false;
+    }
+
+    async function seedRemoteCourses(seedCourses) {
+      if (state.remote.seeding) return;
+      state.remote.seeding = true;
+      state.courses = seedCourses.map(normalizeCourse);
+      await persistCourses();
+      renderAll();
+      setFilter(state.currentFilter);
+      state.remote.seeding = false;
+    }
+
     async function initFirebaseSync(seedCourses) {
       try {
         const configModule = await import('./firebase-config.js');
@@ -247,7 +269,7 @@
 
         if (!isConfigured) {
           updateSyncStatus('Local mode', 'local');
-          return;
+          return false;
         }
 
         const [{ initializeApp }, firestore] = await Promise.all([
@@ -272,25 +294,24 @@
           const data = snapshot.data();
 
           if (!snapshot.exists() || !Array.isArray(data.courses)) {
-            state.courses = seedCourses.map(normalizeCourse);
-            void persistCourses();
+            void seedRemoteCourses(seedCourses);
             return;
           }
 
-          state.remote.applyingRemote = true;
-          state.courses = data.courses.map(normalizeCourse);
-          saveLocalCourses();
-          renderAll();
-          setFilter(state.currentFilter);
-          state.remote.applyingRemote = false;
+          void renderSyncedCourses(data.courses);
           updateSyncStatus('Cloud synced', 'online');
         }, error => {
           console.warn('Firestore listener failed. Local copy remains available.', error);
           updateSyncStatus('Cloud offline · local saved', 'local');
+          state.courses = seedCourses.map(normalizeCourse);
+          renderAll();
+          setFilter(state.currentFilter);
         });
+        return true;
       } catch (error) {
         console.warn('Firebase sync is not configured or could not start.', error);
         updateSyncStatus('Local mode', 'local');
+        return false;
       }
     }
 
@@ -603,10 +624,13 @@
       .then(async data => {
         state.meta = data.meta;
         const seedCourses = loadStoredCourses() || data.courses.map(normalizeCourse);
-        state.courses = seedCourses;
-        renderAll();
-        setFilter('all');
-        await initFirebaseSync(seedCourses);
+        const willUseCloud = await initFirebaseSync(seedCourses);
+
+        if (!willUseCloud) {
+          state.courses = seedCourses;
+          renderAll();
+          setFilter('all');
+        }
       })
       .catch(error => {
         document.getElementById('curriculum-grid').innerHTML = `
