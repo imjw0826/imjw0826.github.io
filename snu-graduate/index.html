@@ -118,7 +118,21 @@
 
   <script>
     const STORAGE_KEY = 'snu-graduate-courses-v3';
+    const trackerMeta = {
+      university: 'Seoul National University',
+      department: '서울대학교 공과대학 기계공학부',
+      studentName: '임정원',
+      studentId: '2025-19994',
+      programSummary: '기계공학 주전공 · 경영학 복수전공',
+      totalCreditsRequired: 130,
+      requirements: {
+        generalEducation: 49,
+        mechanicalEngineering: 62,
+        businessAdministration: 39
+      }
+    };
     const supportedCategories = ['교양', '기계공학 전공', '경영학 전공', '타 학과 전공'];
+    const majorCategories = ['기계공학 전공', '경영학 전공', '타 학과 전공'];
     const semesterPlan = [
       { year: 1, semester: 1, label: '25년도 1학기' },
       { year: 1, semester: 2, label: '25년도 2학기' },
@@ -137,7 +151,7 @@
     };
 
     const state = {
-      meta: null,
+      meta: trackerMeta,
       courses: [],
       currentFilter: 'all',
       draggedCourseId: null,
@@ -185,6 +199,12 @@
 
     function creditsByCategory(courses, category) {
       return sumCredits(courses.filter(course => course.category === category));
+    }
+
+    function compareCourses(a, b) {
+      const majorDifference = Number(majorCategories.includes(b.category)) - Number(majorCategories.includes(a.category));
+      if (majorDifference !== 0) return majorDifference;
+      return a.name.localeCompare(b.name, 'ko-KR', { sensitivity: 'base' });
     }
 
     function saveLocalCourses() {
@@ -398,10 +418,12 @@
           const list = document.createElement('div');
           list.className = 'semester-courses';
 
-          const semesterCourses = state.courses.filter(course => course.year === year && course.semester === semester);
-          const visibleCourses = semesterCourses.filter(course => (
-            state.currentFilter === 'all' || course.category === state.currentFilter
-          ));
+          const semesterCourses = state.courses
+            .filter(course => course.year === year && course.semester === semester)
+            .sort(compareCourses);
+          const visibleCourses = semesterCourses
+            .filter(course => state.currentFilter === 'all' || course.category === state.currentFilter)
+            .sort(compareCourses);
 
           visibleCourses.forEach(course => {
             list.appendChild(buildCard(course));
@@ -616,30 +638,18 @@
       trashDropzone.classList.toggle('drag-near', isNear);
     });
 
-    fetch('courses.json')
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
-      .then(async data => {
-        state.meta = data.meta;
-        const seedCourses = loadStoredCourses() || data.courses.map(normalizeCourse);
-        const willUseCloud = await initFirebaseSync(seedCourses);
+    async function bootTracker() {
+      const seedCourses = loadStoredCourses() || [];
+      const willUseCloud = await initFirebaseSync(seedCourses);
 
-        if (!willUseCloud) {
-          state.courses = seedCourses;
-          renderAll();
-          setFilter('all');
-        }
-      })
-      .catch(error => {
-        document.getElementById('curriculum-grid').innerHTML = `
-          <div class="state-message">
-            courses.json을 불러올 수 없습니다.<br>
-            <small>${error.message}</small>
-          </div>
-        `;
-      });
+      if (!willUseCloud) {
+        state.courses = seedCourses;
+        renderAll();
+        setFilter('all');
+      }
+    }
+
+    void bootTracker();
   </script>
 </body>
 </html>
