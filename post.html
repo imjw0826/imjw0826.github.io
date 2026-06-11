@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Post — Blueprint</title>
+    <title>Post — Jungwon Im</title>
     <meta name="description" content="A markdown post by Jungwon Im." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="assets/css/home.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/github.min.css" />
     <script>
@@ -18,84 +20,57 @@
     </script>
   </head>
   <body>
-    <div class="bp">
-      <aside class="bp-side">
-        <div class="box bp-name">
-          <h1>Jungwon Im</h1>
-        </div>
 
-        <nav class="box bp-nav">
-          <ul>
-            <li><a href="index.html">
-              <i class="nav-icon" data-lucide="house" aria-hidden="true"></i> HOME
-            </a></li>
-            <li><a href="projects.html">
-              <i class="nav-icon" data-lucide="folder-git-2" aria-hidden="true"></i> PROJECTS
-            </a></li>
-            <li><a href="blog.html">
-              <i class="nav-icon" data-lucide="file-pen" aria-hidden="true"></i> BLOG
-            </a></li>
-            <li><a href="contact.html">
-              <i class="nav-icon" data-lucide="circle-user" aria-hidden="true"></i> CONTACT
-            </a></li>
-          </ul>
-        </nav>
+    <header class="site-head">
+      <a class="wordmark" href="index.html">Jungwon Im</a>
+      <nav class="seg-nav" aria-label="Main">
+        <a href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <span>Home</span>
+        </a>
+        <a href="projects.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 20a1 1 0 0 1-1-1v-1.5a1.5 1.5 0 0 0-3 0V19a1 1 0 0 1-1 1"/><circle cx="13" cy="19" r="2"/><circle cx="5" cy="14" r="2"/><path d="M7 14.47V14a2 2 0 0 1 2-2h9.5L21 8.5V5a2 2 0 0 0-2-2h-5.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 10.172 1H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h2"/><path d="M13 17v-3a2 2 0 0 0-2-2H9"/></svg>
+          <span>Projects</span>
+        </a>
+        <a href="blog.html" class="active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 22H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v9.5"/><polyline points="14 2 14 8 20 8"/><path d="M13.378 15.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
+          <span>Blog</span>
+        </a>
+        <a href="contact.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>
+          <span>Contact</span>
+        </a>
+      </nav>
+      <div class="head-social">
+        <a href="https://www.instagram.com/imjw.26/" target="_blank" rel="noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://github.com/imjw0826" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.24-.02-2.25-3.34.73-4.04-1.42-4.04-1.42-.55-1.4-1.34-1.77-1.34-1.77-1.09-.74.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.39 1.24-3.23-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02.01 2.04.14 3 .41 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.92 1.24 3.23 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.7.82.58C20.57 22.3 24 17.8 24 12.5 24 5.87 18.63.5 12 .5z"/></svg>
+        </a>
+      </div>
+    </header>
 
-        <div class="box bp-connect">
-          <div class="connect-label">CONNECT</div>
-          <div class="connect-links">
-            <a href="https://www.instagram.com/imjw.26/" target="_blank" rel="noreferrer" aria-label="Instagram">
-              <iconify-icon icon="bxl:instagram" aria-hidden="true"></iconify-icon>
-            </a>
-            <a href="https://github.com/imjw0826" target="_blank" rel="noreferrer" aria-label="GitHub">
-              <iconify-icon icon="bxl:github" aria-hidden="true"></iconify-icon>
-            </a>
-          </div>
+    <main class="page">
+      <article class="post-shell">
+        <header class="post-header">
+          <a href="blog.html" class="back-link">← Back to blog</a>
+          <h1 class="post-title" id="post-title">Loading post.</h1>
+          <div class="post-meta" id="post-meta"></div>
+        </header>
+        <div class="markdown" id="post-content">
+          <p>Loading markdown file.</p>
         </div>
-      </aside>
+      </article>
+    </main>
 
-      <main class="bp-main">
-        <article class="box" style="flex:1;">
-          <header class="post-header">
-            <p class="eyebrow">POST / MARKDOWN</p>
-            <h1 class="post-title" id="post-title">Loading post.</h1>
-            <div class="post-meta" id="post-meta"></div>
-          </header>
-          <div class="markdown" id="post-content">
-            <p>Loading markdown file.</p>
-          </div>
-        </article>
-      </main>
-
-      <aside class="bp-right">
-        <div class="box">
-          <p class="box-label">SOURCE</p>
-          <p style="font-family:var(--serif); font-size:14px; line-height:1.7; color:var(--ink);">
-            This page fetches a markdown file from the <code>posts</code> folder, converts it in the browser, and renders the result here.
-          </p>
-        </div>
-        <div class="box">
-          <p class="box-label">TESTED MARKDOWN</p>
-          <div class="cat-list">
-            <span class="cat-chip">TABLE</span>
-            <span class="cat-chip">IMAGE</span>
-            <span class="cat-chip">CODE</span>
-            <span class="cat-chip">QUOTE</span>
-            <span class="cat-chip">MATH</span>
-          </div>
-        </div>
-        <div class="box" style="flex:1;">
-          <p class="box-label">BACK</p>
-          <a href="blog.html" class="bp-link">Back to blog →</a>
-        </div>
-      </aside>
-    </div>
+    <footer class="site-foot">
+      © 2026 Jungwon Im · Seoul, South Korea
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/lib/common.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-    <script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script>
       const escapeHtml = (value) =>
         String(value).replace(/[&<>"']/g, (char) => ({
@@ -128,7 +103,7 @@
         }
         const markdown = await mdRes.text();
 
-        document.title = `${meta.title} — Blueprint`;
+        document.title = `${meta.title} — Jungwon Im`;
         document.getElementById('post-title').textContent = meta.title;
         document.getElementById('post-meta').innerHTML =
           `<span>${escapeHtml(meta.date)}</span><span>${escapeHtml((meta.tags || []).join(' · '))}</span>`;
@@ -150,7 +125,7 @@
           });
         }
 
-        if (window.MathJax) {
+        if (window.MathJax && MathJax.typesetPromise) {
           await MathJax.typesetPromise([document.getElementById('post-content')]);
         }
       };
@@ -160,8 +135,6 @@
         document.getElementById('post-content').innerHTML =
           `<p>Post loading failed: ${escapeHtml(error.message)}</p>`;
       });
-
-      lucide.createIcons();
     </script>
   </body>
 </html>
