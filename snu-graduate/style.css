@@ -488,7 +488,7 @@ select {
 
 .card-tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 3px;
   min-width: 0;
 }
@@ -518,6 +518,7 @@ select {
   font-family: var(--font-en);
   font-size: 0.68rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .card-name {

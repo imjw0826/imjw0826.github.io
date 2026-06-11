@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>임정원 이수 현황</title>
-  <link rel="stylesheet" href="style.css?v=20260611" />
+  <link rel="stylesheet" href="style.css?v=20260611b" />
 </head>
 <body class="graduate-page">
   <div class="project-topbar">
@@ -153,6 +153,12 @@
       '기계공학 전공': 'mech',
       '경영학 전공': 'business',
       '타 학과 전공': 'cross'
+    };
+    const shortCategoryLabels = {
+      '교양': '교양',
+      '기계공학 전공': '기계',
+      '경영학 전공': '경영',
+      '타 학과 전공': '타'
     };
 
     const state = {
@@ -368,7 +374,7 @@
       card.draggable = true;
 
       const tags = course.categories
-        .map(category => `<span class="card-type-tag">${category}</span>`)
+        .map(category => `<span class="card-type-tag" title="${category}">${shortCategoryLabels[category] || category}</span>`)
         .join('');
 
       card.innerHTML = `
