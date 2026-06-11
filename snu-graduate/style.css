@@ -53,7 +53,6 @@ select {
 .project-topbar,
 .site-header,
 .filter-bar,
-.curriculum-grid,
 .project-footer {
   width: min(1280px, calc(100vw - 32px));
   margin: 0 auto;
@@ -393,8 +392,10 @@ select {
 }
 
 .curriculum-grid {
+  width: calc(100vw - 16px);
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(8, minmax(164px, 1fr));
+  grid-template-columns: repeat(10, minmax(150px, 1fr));
   gap: 10px;
   padding-top: 6px;
   padding-bottom: 24px;
@@ -403,7 +404,7 @@ select {
 }
 
 .semester-column {
-  min-width: 164px;
+  min-width: 150px;
   padding: 11px;
   border-radius: 10px;
   border: 1px solid var(--color-border);
@@ -439,7 +440,13 @@ select {
   border-radius: 8px;
   border: 1px solid transparent;
   box-shadow: 0 4px 10px rgba(32, 28, 24, 0.04);
-  cursor: grab;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(32, 28, 24, 0.1);
 }
 
 .course-card.dragging {
@@ -473,10 +480,17 @@ select {
 
 .card-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
   margin-bottom: 5px;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  min-width: 0;
 }
 
 .card-type-tag {
@@ -646,11 +660,52 @@ select {
   border-color: rgba(23, 37, 59, 0.4);
 }
 
+.category-toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.category-toggle {
+  padding: 8px 13px;
+  border: 1px solid rgba(32, 28, 24, 0.16);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.category-toggle:hover {
+  border-color: rgba(23, 37, 59, 0.4);
+}
+
+.category-toggle.selected {
+  background: #17253b;
+  border-color: #17253b;
+  color: #ffffff;
+}
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
   margin-top: 8px;
+}
+
+.danger-btn {
+  margin-right: auto;
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(152, 66, 52, 0.35);
+  background: #fff5f3;
+  color: #8e3d31;
+  cursor: pointer;
+}
+
+.danger-btn.hidden {
+  display: none;
 }
 
 .secondary-btn,
@@ -682,9 +737,12 @@ select {
   .project-topbar,
   .site-header,
   .filter-bar,
-  .curriculum-grid,
   .project-footer {
     width: min(100vw - 20px, 1280px);
+  }
+
+  .curriculum-grid {
+    width: calc(100vw - 12px);
   }
 
   .project-topbar {

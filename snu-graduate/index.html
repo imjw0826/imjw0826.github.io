@@ -89,6 +89,8 @@
               <option value="3-2">29년도 1학기</option>
               <option value="4-1">29년도 2학기</option>
               <option value="4-2">30년도 1학기</option>
+              <option value="5-1">30년도 2학기</option>
+              <option value="0-0">미정</option>
             </select>
           </label>
 
@@ -96,21 +98,22 @@
             <span>학점</span>
             <input id="course-credits" name="credits" type="number" min="1" max="6" step="1" value="3" required />
           </label>
+        </div>
 
-          <label class="form-field">
-            <span>분류</span>
-            <select id="course-category" name="category" required>
-              <option value="교양">교양</option>
-              <option value="기계공학 전공">기계공학 전공</option>
-              <option value="경영학 전공">경영학 전공</option>
-              <option value="타 학과 전공">타 학과 전공</option>
-            </select>
-          </label>
+        <div class="form-field">
+          <span>분류 (중복 선택 가능)</span>
+          <div class="category-toggle-group" id="course-categories">
+            <button type="button" class="category-toggle" data-category="교양">교양</button>
+            <button type="button" class="category-toggle" data-category="기계공학 전공">기계공학 전공</button>
+            <button type="button" class="category-toggle" data-category="경영학 전공">경영학 전공</button>
+            <button type="button" class="category-toggle" data-category="타 학과 전공">타 학과 전공</button>
+          </div>
         </div>
 
         <div class="modal-actions">
+          <button class="danger-btn hidden" id="course-modal-delete" type="button">삭제</button>
           <button class="secondary-btn" id="course-modal-cancel" type="button">취소</button>
-          <button class="primary-btn" type="submit">추가</button>
+          <button class="primary-btn" id="course-modal-submit" type="submit">추가</button>
         </div>
       </form>
     </div>
@@ -132,7 +135,7 @@
       }
     };
     const supportedCategories = ['교양', '기계공학 전공', '경영학 전공', '타 학과 전공'];
-    const majorCategories = ['기계공학 전공', '경영학 전공', '타 학과 전공'];
+    const categoryPriority = ['기계공학 전공', '경영학 전공', '타 학과 전공', '교양'];
     const semesterPlan = [
       { year: 1, semester: 1, label: '25년도 1학기' },
       { year: 1, semester: 2, label: '25년도 2학기' },
@@ -141,7 +144,9 @@
       { year: 3, semester: 1, label: '28년도 2학기' },
       { year: 3, semester: 2, label: '29년도 1학기' },
       { year: 4, semester: 1, label: '29년도 2학기' },
-      { year: 4, semester: 2, label: '30년도 1학기' }
+      { year: 4, semester: 2, label: '30년도 1학기' },
+      { year: 5, semester: 1, label: '30년도 2학기' },
+      { year: 0, semester: 0, label: '미정' }
     ];
     const classByCategory = {
       '교양': 'ge',
@@ -155,6 +160,8 @@
       courses: [],
       currentFilter: 'all',
       draggedCourseId: null,
+      editingUid: null,
+      suppressClick: false,
       remote: {
         enabled: false,
         ready: false,
@@ -174,14 +181,23 @@
     }
 
     function normalizeCourse(course) {
+      const rawCategories = Array.isArray(course.categories)
+        ? course.categories
+        : (course.category ? [course.category] : []);
+      const categories = categoryPriority.filter(category => rawCategories.includes(category));
+
       return {
         uid: course.uid || createUid(),
         name: String(course.name || '').trim(),
         year: Number(course.year),
         semester: Number(course.semester),
         credits: Number(course.credits),
-        category: supportedCategories.includes(course.category) ? course.category : '교양'
+        categories: categories.length > 0 ? categories : ['교양']
       };
+    }
+
+    function primaryCategory(course) {
+      return categoryPriority.find(category => course.categories.includes(category)) || '교양';
     }
 
     function parseTermValue(value) {
@@ -198,12 +214,13 @@
     }
 
     function creditsByCategory(courses, category) {
-      return sumCredits(courses.filter(course => course.category === category));
+      return sumCredits(courses.filter(course => course.categories.includes(category)));
     }
 
     function compareCourses(a, b) {
-      const majorDifference = Number(majorCategories.includes(b.category)) - Number(majorCategories.includes(a.category));
-      if (majorDifference !== 0) return majorDifference;
+      const priorityDifference =
+        categoryPriority.indexOf(primaryCategory(a)) - categoryPriority.indexOf(primaryCategory(b));
+      if (priorityDifference !== 0) return priorityDifference;
       return a.name.localeCompare(b.name, 'ko-KR', { sensitivity: 'base' });
     }
 
@@ -344,23 +361,32 @@
     }
 
     function buildCard(course) {
-      const cls = classByCategory[course.category] || 'ge';
+      const cls = classByCategory[primaryCategory(course)] || 'ge';
       const card = document.createElement('article');
       card.className = `course-card ${cls}`;
-      card.dataset.category = course.category;
       card.dataset.uid = course.uid;
       card.draggable = true;
 
+      const tags = course.categories
+        .map(category => `<span class="card-type-tag">${category}</span>`)
+        .join('');
+
       card.innerHTML = `
         <div class="card-header">
-          <span class="card-type-tag">${course.category}</span>
+          <span class="card-tags">${tags}</span>
           <span class="card-credits">${course.credits}학점</span>
         </div>
         <div class="card-name">${course.name}</div>
       `;
 
+      card.addEventListener('click', () => {
+        if (state.suppressClick) return;
+        openCourseModal({ course });
+      });
+
       card.addEventListener('dragstart', event => {
         state.draggedCourseId = course.uid;
+        state.suppressClick = true;
         card.classList.add('dragging');
         document.body.classList.add('dragging-course');
         event.dataTransfer.effectAllowed = 'move';
@@ -369,6 +395,9 @@
 
       card.addEventListener('dragend', () => {
         clearDragState();
+        setTimeout(() => {
+          state.suppressClick = false;
+        }, 0);
       });
 
       return card;
@@ -422,7 +451,7 @@
             .filter(course => course.year === year && course.semester === semester)
             .sort(compareCourses);
           const visibleCourses = semesterCourses
-            .filter(course => state.currentFilter === 'all' || course.category === state.currentFilter)
+            .filter(course => state.currentFilter === 'all' || course.categories.includes(state.currentFilter))
             .sort(compareCourses);
 
           visibleCourses.forEach(course => {
@@ -528,11 +557,31 @@
       clearDragState();
     }
 
-    function openCourseModal(prefill) {
-      document.getElementById('course-name').value = '';
-      document.getElementById('course-term').value = getTermValue(prefill.year, prefill.semester);
-      document.getElementById('course-credits').value = '3';
-      document.getElementById('course-category').value = '교양';
+    function setModalCategories(categories) {
+      document.querySelectorAll('#course-categories .category-toggle').forEach(button => {
+        button.classList.toggle('selected', categories.includes(button.dataset.category));
+      });
+    }
+
+    function getModalCategories() {
+      return [...document.querySelectorAll('#course-categories .category-toggle.selected')]
+        .map(button => button.dataset.category);
+    }
+
+    function openCourseModal(options) {
+      const course = options.course || null;
+      state.editingUid = course ? course.uid : null;
+
+      document.getElementById('course-modal-title').textContent = course ? '과목 수정' : '과목 추가';
+      document.getElementById('course-modal-submit').textContent = course ? '저장' : '추가';
+      document.getElementById('course-modal-delete').classList.toggle('hidden', !course);
+      document.getElementById('course-name').value = course ? course.name : '';
+      document.getElementById('course-term').value = course
+        ? getTermValue(course.year, course.semester)
+        : getTermValue(options.year, options.semester);
+      document.getElementById('course-credits').value = course ? String(course.credits) : '3';
+      setModalCategories(course ? course.categories : ['교양']);
+
       document.getElementById('course-modal-backdrop').classList.remove('hidden');
       requestAnimationFrame(() => {
         document.getElementById('course-name').focus();
@@ -540,6 +589,7 @@
     }
 
     function closeCourseModal() {
+      state.editingUid = null;
       document.getElementById('course-modal-backdrop').classList.add('hidden');
       document.getElementById('course-form').reset();
     }
@@ -569,28 +619,58 @@
       setFilter(button.dataset.filter);
     });
 
+    document.getElementById('course-categories').addEventListener('click', event => {
+      const button = event.target.closest('.category-toggle');
+      if (!button) return;
+      button.classList.toggle('selected');
+    });
+
     document.getElementById('course-form').addEventListener('submit', event => {
       event.preventDefault();
-      const term = parseTermValue(document.getElementById('course-term').value);
 
-      const course = normalizeCourse({
+      const categories = getModalCategories();
+      if (categories.length === 0) {
+        alert('분류를 하나 이상 선택해주세요.');
+        return;
+      }
+
+      const term = parseTermValue(document.getElementById('course-term').value);
+      const payload = {
         name: document.getElementById('course-name').value,
         year: term.year,
         semester: term.semester,
         credits: document.getElementById('course-credits').value,
-        category: document.getElementById('course-category').value
-      });
+        categories
+      };
 
-      state.courses.push(course);
+      let course;
+      if (state.editingUid) {
+        const index = state.courses.findIndex(item => item.uid === state.editingUid);
+        if (index === -1) return;
+        course = normalizeCourse({ ...payload, uid: state.editingUid });
+        state.courses[index] = course;
+      } else {
+        course = normalizeCourse(payload);
+        state.courses.push(course);
+      }
+
       saveCourses();
 
-      if (state.currentFilter !== 'all' && state.currentFilter !== course.category) {
+      if (state.currentFilter !== 'all' && !course.categories.includes(state.currentFilter)) {
         state.currentFilter = 'all';
       }
 
       closeCourseModal();
       renderAll();
       setFilter(state.currentFilter);
+    });
+
+    document.getElementById('course-modal-delete').addEventListener('click', () => {
+      if (!state.editingUid) return;
+      state.courses = state.courses.filter(course => course.uid !== state.editingUid);
+      saveCourses();
+      closeCourseModal();
+      renderAll();
     });
 
     document.getElementById('course-modal-close').addEventListener('click', closeCourseModal);
