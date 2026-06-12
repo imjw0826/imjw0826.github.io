@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Inter:wght@500;600;700&family=Hi+Melody&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Inter:wght@500;600;700&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -30,7 +30,6 @@
   --color-accent: #d6336c;
   --font-ko: 'Noto Sans KR', sans-serif;
   --font-en: 'Inter', sans-serif;
-  --font-cute: 'Hi Melody', 'Noto Sans KR', sans-serif;
 }
 
 html {
@@ -168,29 +167,15 @@ select {
 }
 
 .header-department {
-  font-family: var(--font-cute);
-  font-size: clamp(1.9rem, 3.4vw, 2.7rem);
-  line-height: 1.05;
-  letter-spacing: 0;
+  font-size: clamp(1.45rem, 2.8vw, 2.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
   color: var(--color-accent);
-}
-
-.header-department::before {
-  content: '👑 ';
-}
-
-.header-department::after {
-  content: ' 💖';
-  font-size: 0.7em;
 }
 
 .header-subtitle {
   font-size: 0.82rem;
   color: var(--color-text-muted);
-}
-
-.header-subtitle::after {
-  content: ' 🎀';
 }
 
 .credit-summary {
