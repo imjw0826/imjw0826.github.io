@@ -395,7 +395,7 @@ select {
   width: calc(100vw - 16px);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(10, minmax(150px, 1fr));
+  grid-template-columns: repeat(9, minmax(150px, 1fr));
   gap: 10px;
   padding-top: 6px;
   padding-bottom: 24px;
