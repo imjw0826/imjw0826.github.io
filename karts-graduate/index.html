@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>박지원 이수 현황</title>
+  <link rel="stylesheet" href="style.css?v=20260611b" />
+</head>
+<body class="graduate-page">
+  <div class="project-topbar">
+    <a class="project-topbar-link" href="../index.html">Garden home</a>
+    <div class="project-topbar-links">
+      <span class="project-topbar-current">K-Arts Graduate Tracker</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-top">
+      <div class="header-title">
+        <span class="header-university" id="header-university"></span>
+        <h1 class="header-department" id="header-title"></h1>
+        <span class="header-subtitle" id="header-subtitle"></span>
+      </div>
+
+      <section class="credit-summary" aria-label="credit summary">
+        <div class="total-summary">
+          <div class="summary-item">
+            <span class="summary-label">이수학점</span>
+            <strong class="summary-value" id="credit-count"></strong>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-item">
+            <span class="summary-label">채워야 할 학점</span>
+            <strong class="summary-value" id="credit-required"></strong>
+          </div>
+        </div>
+        <div class="credit-progress-bar" aria-label="total credit progress">
+          <div class="credit-progress-fill" id="credit-progress" style="width: 0%"></div>
+        </div>
+        <div class="requirement-rings" id="requirement-rings"></div>
+      </section>
+    </div>
+  </header>
+
+  <nav class="filter-bar">
+    <div class="filter-controls">
+      <span class="filter-label">Filter</span>
+      <span class="sync-status syncing" id="sync-status" role="status" aria-live="polite">
+        <span class="sync-check" aria-hidden="true">✓</span>
+        <span class="sync-text">Cloud sync</span>
+      </span>
+      <button class="filter-btn active" data-filter="all">전체</button>
+      <button class="filter-btn" data-filter="교양">교양</button>
+      <button class="filter-btn" data-filter="해금 전공">해금 전공</button>
+      <button class="filter-btn" data-filter="타 전공">타 전공</button>
+    </div>
+
+    <button class="trash-dropzone" id="trash-dropzone" type="button" aria-label="drag here to delete">
+      <span class="trash-icon">🗑</span>
+      <span class="trash-text">버리기</span>
+    </button>
+  </nav>
+
+  <main class="curriculum-grid" id="curriculum-grid"></main>
+
+  <div class="modal-backdrop hidden" id="course-modal-backdrop">
+    <div class="course-modal" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
+      <div class="modal-header">
+        <h2 class="modal-title" id="course-modal-title">과목 추가</h2>
+        <button class="modal-close" id="course-modal-close" type="button" aria-label="닫기">×</button>
+      </div>
+
+      <form class="course-form" id="course-form">
+        <label class="form-field">
+          <span>과목명</span>
+          <input id="course-name" name="name" type="text" placeholder="예: 해금실기" required />
+        </label>
+
+        <div class="form-grid">
+          <label class="form-field">
+            <span>학기</span>
+            <select id="course-term" name="term" required>
+              <option value="1-1">25년도 1학기</option>
+              <option value="1-2">25년도 2학기</option>
+              <option value="2-1">26년도 1학기</option>
+              <option value="2-2">28년도 1학기</option>
+              <option value="3-1">28년도 2학기</option>
+              <option value="3-2">29년도 1학기</option>
+              <option value="4-1">29년도 2학기</option>
+              <option value="4-2">30년도 1학기</option>
+              <option value="5-1">30년도 2학기</option>
+              <option value="0-0">미정</option>
+            </select>
+          </label>
+
+          <label class="form-field">
+            <span>학점</span>
+            <input id="course-credits" name="credits" type="number" min="1" max="6" step="1" value="3" required />
+          </label>
+        </div>
+
+        <div class="form-field">
+          <span>분류 (중복 선택 가능)</span>
+          <div class="category-toggle-group" id="course-categories">
+            <button type="button" class="category-toggle" data-category="교양">교양</button>
+            <button type="button" class="category-toggle" data-category="해금 전공">해금 전공</button>
+            <button type="button" class="category-toggle" data-category="타 전공">타 전공</button>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="danger-btn hidden" id="course-modal-delete" type="button">삭제</button>
+          <button class="secondary-btn" id="course-modal-cancel" type="button">취소</button>
+          <button class="primary-btn" id="course-modal-submit" type="submit">추가</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'karts-graduate-courses-v1';
+    const trackerMeta = {
+      university: 'Korea National University of Arts',
+      department: '한국예술종합학교 전통예술원',
+      studentName: '박지원',
+      studentId: '',
+      programSummary: '해금 전공',
+      totalCreditsRequired: 140,
+      requirements: {
+        generalEducation: 45,
+        haegeum: 95
+      }
+    };
+    const supportedCategories = ['교양', '해금 전공', '타 전공'];
+    const categoryPriority = ['해금 전공', '타 전공', '교양'];
+    const semesterPlan = [
+      { year: 1, semester: 1, label: '25년도 1학기' },
+      { year: 1, semester: 2, label: '25년도 2학기' },
+      { year: 2, semester: 1, label: '26년도 1학기' },
+      { year: 2, semester: 2, label: '28년도 1학기' },
+      { year: 3, semester: 1, label: '28년도 2학기' },
+      { year: 3, semester: 2, label: '29년도 1학기' },
+      { year: 4, semester: 1, label: '29년도 2학기' },
+      { year: 4, semester: 2, label: '30년도 1학기' },
+      { year: 5, semester: 1, label: '30년도 2학기' },
+      { year: 0, semester: 0, label: '미정' }
+    ];
+    const classByCategory = {
+      '교양': 'ge',
+      '해금 전공': 'mech',
+      '타 전공': 'cross'
+    };
+    const shortCategoryLabels = {
+      '교양': '교양',
+      '해금 전공': '해금',
+      '타 전공': '타'
+    };
+
+    const state = {
+      meta: trackerMeta,
+      courses: [],
+      currentFilter: 'all',
+      draggedCourseId: null,
+      editingUid: null,
+      suppressClick: false,
+      remote: {
+        enabled: false,
+        ready: false,
+        applyingRemote: false,
+        docRef: null,
+        setDoc: null,
+        serverTimestamp: null,
+        unsubscribe: null
+      }
+    };
+
+    function createUid() {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+      }
+      return `course-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function normalizeCourse(course) {
+      const rawCategories = Array.isArray(course.categories)
+        ? course.categories
+        : (course.category ? [course.category] : []);
+      const categories = categoryPriority.filter(category => rawCategories.includes(category));
+
+      return {
+        uid: course.uid || createUid(),
+        name: String(course.name || '').trim(),
+        year: Number(course.year),
+        semester: Number(course.semester),
+        credits: Number(course.credits),
+        categories: categories.length > 0 ? categories : ['교양']
+      };
+    }
+
+    function primaryCategory(course) {
+      return categoryPriority.find(category => course.categories.includes(category)) || '교양';
+    }
+
+    function parseTermValue(value) {
+      const [year, semester] = String(value).split('-').map(Number);
+      return { year, semester };
+    }
+
+    function getTermValue(year, semester) {
+      return `${year}-${semester}`;
+    }
+
+    function sumCredits(items) {
+      return items.reduce((sum, item) => sum + item.credits, 0);
+    }
+
+    function creditsByCategory(courses, category) {
+      return sumCredits(courses.filter(course => course.categories.includes(category)));
+    }
+
+    function compareCourses(a, b) {
+      const priorityDifference =
+        categoryPriority.indexOf(primaryCategory(a)) - categoryPriority.indexOf(primaryCategory(b));
+      if (priorityDifference !== 0) return priorityDifference;
+      return a.name.localeCompare(b.name, 'ko-KR', { sensitivity: 'base' });
+    }
+
+    function saveLocalCourses() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.courses));
+    }
+
+    function updateSyncStatus(text, mode = 'local') {
+      const status = document.getElementById('sync-status');
+      const textNode = status.querySelector('.sync-text');
+      if (textNode) {
+        textNode.textContent = text;
+      } else {
+        status.textContent = text;
+      }
+      status.className = `sync-status ${mode}`;
+    }
+
+    async function persistCourses() {
+      saveLocalCourses();
+
+      if (!state.remote.enabled || !state.remote.ready || state.remote.applyingRemote) {
+        updateSyncStatus('Local saved', 'local');
+        return;
+      }
+
+      updateSyncStatus('Syncing...', 'syncing');
+
+      try {
+        await state.remote.setDoc(state.remote.docRef, {
+          courses: state.courses,
+          updatedAt: state.remote.serverTimestamp()
+        }, { merge: true });
+        updateSyncStatus('Cloud saved', 'online');
+      } catch (error) {
+        console.warn('Firestore save failed. Local copy was kept.', error);
+        updateSyncStatus('Cloud offline · local saved', 'local');
+      }
+    }
+
+    function saveCourses() {
+      void persistCourses();
+    }
+
+    function loadStoredCourses() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+
+      try {
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return null;
+        return parsed.map(normalizeCourse);
+      } catch {
+        return null;
+      }
+    }
+
+    async function renderSyncedCourses(courses) {
+      state.remote.applyingRemote = true;
+      state.courses = courses.map(normalizeCourse);
+      saveLocalCourses();
+      renderAll();
+      setFilter(state.currentFilter);
+      state.remote.applyingRemote = false;
+    }
+
+    async function seedRemoteCourses(seedCourses) {
+      if (state.remote.seeding) return;
+      state.remote.seeding = true;
+      state.courses = seedCourses.map(normalizeCourse);
+      await persistCourses();
+      renderAll();
+      setFilter(state.currentFilter);
+      state.remote.seeding = false;
+    }
+
+    async function initFirebaseSync(seedCourses) {
+      try {
+        const configModule = await import('./firebase-config.js');
+        const firebaseSettings = configModule.firebaseSettings || {};
+        const firebaseConfig = configModule.firebaseConfig || {};
+        const isConfigured = Boolean(firebaseSettings.enabled && firebaseConfig.apiKey && !String(firebaseConfig.apiKey).includes('YOUR_'));
+
+        if (!isConfigured) {
+          updateSyncStatus('Local mode', 'local');
+          return false;
+        }
+
+        const [{ initializeApp }, firestore] = await Promise.all([
+          import('https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js'),
+          import('https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js')
+        ]);
+
+        const app = initializeApp(firebaseConfig);
+        const db = firestore.getFirestore(app);
+        const collectionPath = firebaseSettings.collectionPath || 'snuGraduateTrackers';
+        const documentId = firebaseSettings.documentId || 'default';
+
+        state.remote.enabled = true;
+        state.remote.ready = true;
+        state.remote.docRef = firestore.doc(db, collectionPath, documentId);
+        state.remote.setDoc = firestore.setDoc;
+        state.remote.serverTimestamp = firestore.serverTimestamp;
+
+        updateSyncStatus('Connecting...', 'syncing');
+
+        state.remote.unsubscribe = firestore.onSnapshot(state.remote.docRef, snapshot => {
+          const data = snapshot.data();
+
+          if (!snapshot.exists() || !Array.isArray(data.courses)) {
+            void seedRemoteCourses(seedCourses);
+            return;
+          }
+
+          void renderSyncedCourses(data.courses);
+          updateSyncStatus('Cloud synced', 'online');
+        }, error => {
+          console.warn('Firestore listener failed. Local copy remains available.', error);
+          updateSyncStatus('Cloud offline · local saved', 'local');
+          state.courses = seedCourses.map(normalizeCourse);
+          renderAll();
+          setFilter(state.currentFilter);
+        });
+        return true;
+      } catch (error) {
+        console.warn('Firebase sync is not configured or could not start.', error);
+        updateSyncStatus('Local mode', 'local');
+        return false;
+      }
+    }
+
+    function setFilter(filter) {
+      state.currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(button => {
+        button.classList.toggle('active', button.dataset.filter === filter);
+      });
+      buildGrid();
+    }
+
+    function buildCard(course) {
+      const cls = classByCategory[primaryCategory(course)] || 'ge';
+      const card = document.createElement('article');
+      card.className = `course-card ${cls}`;
+      card.dataset.uid = course.uid;
+      card.draggable = true;
+
+      const tags = course.categories
+        .map(category => `<span class="card-type-tag" title="${category}">${shortCategoryLabels[category] || category}</span>`)
+        .join('');
+
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="card-tags">${tags}</span>
+          <span class="card-credits">${course.credits}학점</span>
+        </div>
+        <div class="card-name">${course.name}</div>
+      `;
+
+      card.addEventListener('click', () => {
+        if (state.suppressClick) return;
+        openCourseModal({ course });
+      });
+
+      card.addEventListener('dragstart', event => {
+        state.draggedCourseId = course.uid;
+        state.suppressClick = true;
+        card.classList.add('dragging');
+        document.body.classList.add('dragging-course');
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', course.uid);
+      });
+
+      card.addEventListener('dragend', () => {
+        clearDragState();
+        setTimeout(() => {
+          state.suppressClick = false;
+        }, 0);
+      });
+
+      return card;
+    }
+
+    function buildAddCard(year, semester) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'add-course-card';
+      button.innerHTML = `
+        <span class="add-course-plus">+</span>
+        <span class="add-course-text">과목 추가</span>
+      `;
+
+      button.addEventListener('click', () => {
+        openCourseModal({ year, semester });
+      });
+
+      return button;
+    }
+
+    function handleSemesterDrop(year, semester) {
+      if (!state.draggedCourseId) return;
+
+      const course = state.courses.find(item => item.uid === state.draggedCourseId);
+      if (!course) return;
+
+      course.year = year;
+      course.semester = semester;
+      saveCourses();
+      renderAll();
+    }
+
+    function buildGrid() {
+      const grid = document.getElementById('curriculum-grid');
+      grid.innerHTML = '';
+
+      semesterPlan.forEach(({ year, semester, label: termLabel }) => {
+          const section = document.createElement('section');
+          section.className = 'semester-column';
+
+          const label = document.createElement('div');
+          label.className = 'semester-column-label';
+          label.textContent = termLabel;
+          section.appendChild(label);
+
+          const list = document.createElement('div');
+          list.className = 'semester-courses';
+
+          const semesterCourses = state.courses
+            .filter(course => course.year === year && course.semester === semester)
+            .sort(compareCourses);
+          const visibleCourses = semesterCourses
+            .filter(course => state.currentFilter === 'all' || course.categories.includes(state.currentFilter))
+            .sort(compareCourses);
+
+          visibleCourses.forEach(course => {
+            list.appendChild(buildCard(course));
+          });
+
+          if (visibleCourses.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'semester-empty';
+            empty.textContent = semesterCourses.length === 0 ? '—' : '해당 분류 과목 없음';
+            list.appendChild(empty);
+          }
+
+          list.appendChild(buildAddCard(year, semester));
+
+          section.addEventListener('dragover', event => {
+            event.preventDefault();
+            if (!state.draggedCourseId) return;
+            section.classList.add('drop-target');
+          });
+
+          section.addEventListener('dragleave', event => {
+            if (!section.contains(event.relatedTarget)) {
+              section.classList.remove('drop-target');
+            }
+          });
+
+          section.addEventListener('drop', event => {
+            event.preventDefault();
+            section.classList.remove('drop-target');
+            handleSemesterDrop(year, semester);
+          });
+
+          section.appendChild(list);
+          grid.appendChild(section);
+      });
+    }
+
+    function buildRequirementCard(config) {
+      const percent = config.required > 0 ? Math.min((config.current / config.required) * 100, 100) : 0;
+      const card = document.createElement('section');
+      card.className = 'ring-card';
+
+      card.innerHTML = `
+        <div class="progress-ring ${config.ringClass}" style="--pct:${percent.toFixed(2)}%">
+          <div class="progress-ring-inner">
+            <strong>${config.current}</strong>
+            <span>/ ${config.required}</span>
+          </div>
+        </div>
+        <div class="ring-label">${config.label}</div>
+      `;
+
+      return card;
+    }
+
+    function updateHeader() {
+      document.title = `${state.meta.studentName} 이수 현황`;
+      document.getElementById('header-university').textContent = state.meta.university;
+      document.getElementById('header-title').textContent = state.meta.studentId
+        ? `${state.meta.studentName} (${state.meta.studentId})`
+        : state.meta.studentName;
+      document.getElementById('header-subtitle').textContent = `${state.meta.department} · ${state.meta.programSummary}`;
+    }
+
+    function updateSummary() {
+      const rings = document.getElementById('requirement-rings');
+      const total = sumCredits(state.courses);
+      const totalPercent = state.meta.totalCreditsRequired > 0
+        ? Math.min((total / state.meta.totalCreditsRequired) * 100, 100)
+        : 0;
+
+      document.getElementById('credit-count').textContent = total;
+      document.getElementById('credit-required').textContent = state.meta.totalCreditsRequired;
+      document.getElementById('credit-progress').style.width = `${totalPercent}%`;
+
+      rings.innerHTML = '';
+
+      [
+        {
+          label: '교양',
+          current: creditsByCategory(state.courses, '교양'),
+          required: state.meta.requirements.generalEducation,
+          ringClass: 'ge'
+        },
+        {
+          label: '해금 전공',
+          current: creditsByCategory(state.courses, '해금 전공'),
+          required: state.meta.requirements.haegeum,
+          ringClass: 'mech'
+        }
+      ].forEach(config => rings.appendChild(buildRequirementCard(config)));
+    }
+
+    function renderAll() {
+      updateHeader();
+      updateSummary();
+      buildGrid();
+      clearDragState();
+    }
+
+    function setModalCategories(categories) {
+      document.querySelectorAll('#course-categories .category-toggle').forEach(button => {
+        button.classList.toggle('selected', categories.includes(button.dataset.category));
+      });
+    }
+
+    function getModalCategories() {
+      return [...document.querySelectorAll('#course-categories .category-toggle.selected')]
+        .map(button => button.dataset.category);
+    }
+
+    function openCourseModal(options) {
+      const course = options.course || null;
+      state.editingUid = course ? course.uid : null;
+
+      document.getElementById('course-modal-title').textContent = course ? '과목 수정' : '과목 추가';
+      document.getElementById('course-modal-submit').textContent = course ? '저장' : '추가';
+      document.getElementById('course-modal-delete').classList.toggle('hidden', !course);
+      document.getElementById('course-name').value = course ? course.name : '';
+      document.getElementById('course-term').value = course
+        ? getTermValue(course.year, course.semester)
+        : getTermValue(options.year, options.semester);
+      document.getElementById('course-credits').value = course ? String(course.credits) : '3';
+      setModalCategories(course ? course.categories : ['교양']);
+
+      document.getElementById('course-modal-backdrop').classList.remove('hidden');
+      requestAnimationFrame(() => {
+        document.getElementById('course-name').focus();
+      });
+    }
+
+    function closeCourseModal() {
+      state.editingUid = null;
+      document.getElementById('course-modal-backdrop').classList.add('hidden');
+      document.getElementById('course-form').reset();
+    }
+
+    function clearDragState() {
+      state.draggedCourseId = null;
+      document.body.classList.remove('dragging-course');
+      document.querySelectorAll('.course-card.dragging').forEach(card => {
+        card.classList.remove('dragging');
+      });
+      document.querySelectorAll('.semester-column.drop-target').forEach(column => {
+        column.classList.remove('drop-target');
+      });
+      document.getElementById('trash-dropzone').classList.remove('drag-near', 'drag-over');
+    }
+
+    function removeDraggedCourse() {
+      if (!state.draggedCourseId) return;
+      state.courses = state.courses.filter(course => course.uid !== state.draggedCourseId);
+      saveCourses();
+      renderAll();
+    }
+
+    document.querySelector('.filter-controls').addEventListener('click', event => {
+      const button = event.target.closest('.filter-btn');
+      if (!button) return;
+      setFilter(button.dataset.filter);
+    });
+
+    document.getElementById('course-categories').addEventListener('click', event => {
+      const button = event.target.closest('.category-toggle');
+      if (!button) return;
+      button.classList.toggle('selected');
+    });
+
+    document.getElementById('course-form').addEventListener('submit', event => {
+      event.preventDefault();
+
+      const categories = getModalCategories();
+      if (categories.length === 0) {
+        alert('분류를 하나 이상 선택해주세요.');
+        return;
+      }
+
+      const term = parseTermValue(document.getElementById('course-term').value);
+      const payload = {
+        name: document.getElementById('course-name').value,
+        year: term.year,
+        semester: term.semester,
+        credits: document.getElementById('course-credits').value,
+        categories
+      };
+
+      let course;
+      if (state.editingUid) {
+        const index = state.courses.findIndex(item => item.uid === state.editingUid);
+        if (index === -1) return;
+        course = normalizeCourse({ ...payload, uid: state.editingUid });
+        state.courses[index] = course;
+      } else {
+        course = normalizeCourse(payload);
+        state.courses.push(course);
+      }
+
+      saveCourses();
+
+      if (state.currentFilter !== 'all' && !course.categories.includes(state.currentFilter)) {
+        state.currentFilter = 'all';
+      }
+
+      closeCourseModal();
+      renderAll();
+      setFilter(state.currentFilter);
+    });
+
+    document.getElementById('course-modal-delete').addEventListener('click', () => {
+      if (!state.editingUid) return;
+      state.courses = state.courses.filter(course => course.uid !== state.editingUid);
+      saveCourses();
+      closeCourseModal();
+      renderAll();
+    });
+
+    document.getElementById('course-modal-close').addEventListener('click', closeCourseModal);
+    document.getElementById('course-modal-cancel').addEventListener('click', closeCourseModal);
+    document.getElementById('course-modal-backdrop').addEventListener('click', event => {
+      if (event.target.id === 'course-modal-backdrop') closeCourseModal();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeCourseModal();
+      }
+    });
+
+    const trashDropzone = document.getElementById('trash-dropzone');
+
+    trashDropzone.addEventListener('dragover', event => {
+      event.preventDefault();
+      if (!state.draggedCourseId) return;
+      trashDropzone.classList.add('drag-over');
+    });
+
+    trashDropzone.addEventListener('dragleave', event => {
+      if (!trashDropzone.contains(event.relatedTarget)) {
+        trashDropzone.classList.remove('drag-over');
+      }
+    });
+
+    trashDropzone.addEventListener('drop', event => {
+      event.preventDefault();
+      removeDraggedCourse();
+    });
+
+    document.addEventListener('dragover', event => {
+      if (!state.draggedCourseId) return;
+
+      const rect = trashDropzone.getBoundingClientRect();
+      const padding = 56;
+      const isNear =
+        event.clientX >= rect.left - padding &&
+        event.clientX <= rect.right + padding &&
+        event.clientY >= rect.top - padding &&
+        event.clientY <= rect.bottom + padding;
+
+      trashDropzone.classList.toggle('drag-near', isNear);
+    });
+
+    async function bootTracker() {
+      const seedCourses = loadStoredCourses() || [];
+      const willUseCloud = await initFirebaseSync(seedCourses);
+
+      if (!willUseCloud) {
+        state.courses = seedCourses;
+        renderAll();
+        setFilter('all');
+      }
+    }
+
+    void bootTracker();
+  </script>
+</body>
+</html>
