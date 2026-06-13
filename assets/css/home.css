@@ -192,7 +192,6 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
   margin-top: 8px;
   font-size: 13.5px;
   color: var(--ink-soft);
-  max-width: 56ch;
 }
 
 /* ── Hero (home) ────────────────────────── */
@@ -208,7 +207,6 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
 
 .hero p {
   margin-top: 10px;
-  max-width: 58ch;
   color: var(--ink-soft);
 }
 
@@ -464,7 +462,7 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
 /* ── Projects page ──────────────────────── */
 .project-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
