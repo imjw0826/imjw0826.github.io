@@ -109,6 +109,185 @@
 
         <article class="project-card">
           <div class="meta-row">
+            <span class="label accent">3D map</span>
+            <span class="label">2026</span>
+          </div>
+          <h3>SNU Campus 3D</h3>
+          <div class="thumb">
+            <svg viewBox="0 0 220 90" preserveAspectRatio="xMidYMid meet">
+              <rect x="12" y="6" width="196" height="78" rx="5" fill="#ffffff" stroke="currentColor" stroke-width="0.9"/>
+              <!-- building list sidebar -->
+              <rect x="18" y="12" width="44" height="66" rx="3" fill="rgba(46,110,78,0.04)" stroke="currentColor" stroke-width="0.6"/>
+              <rect x="23" y="17" width="9" height="9" rx="2" fill="currentColor"/>
+              <rect x="35" y="18" width="22" height="3" rx="1" fill="currentColor"/>
+              <rect x="35" y="23" width="16" height="2.2" rx="1" fill="rgba(46,110,78,0.3)"/>
+              <rect x="23" y="33" width="34" height="5" rx="1.5" fill="rgba(46,110,78,0.14)"/>
+              <rect x="23" y="41" width="34" height="5" rx="1.5" fill="#ffffff" stroke="currentColor" stroke-width="0.4"/>
+              <rect x="23" y="49" width="34" height="5" rx="1.5" fill="#ffffff" stroke="currentColor" stroke-width="0.4"/>
+              <rect x="23" y="57" width="34" height="5" rx="1.5" fill="#ffffff" stroke="currentColor" stroke-width="0.4"/>
+              <!-- ground plane -->
+              <polygon points="70,62 136,44 202,62 136,80" fill="rgba(46,110,78,0.06)" stroke="currentColor" stroke-width="0.5"/>
+              <!-- isometric buildings -->
+              <g stroke="currentColor" stroke-width="0.6" stroke-linejoin="round">
+                <polygon points="96,58 110,54 110,34 96,38" fill="rgba(46,110,78,0.2)"/>
+                <polygon points="110,54 124,58 124,38 110,34" fill="rgba(46,110,78,0.08)"/>
+                <polygon points="96,38 110,34 124,38 110,42" fill="#ffffff"/>
+                <polygon points="128,64 146,59 146,26 128,31" fill="rgba(46,110,78,0.32)"/>
+                <polygon points="146,59 164,64 164,31 146,26" fill="rgba(46,110,78,0.12)"/>
+                <polygon points="128,31 146,26 164,31 146,36" fill="#ffffff"/>
+                <polygon points="160,70 174,66 174,52 160,56" fill="rgba(46,110,78,0.2)"/>
+                <polygon points="174,66 188,70 188,56 174,52" fill="rgba(46,110,78,0.08)"/>
+                <polygon points="160,56 174,52 188,56 174,60" fill="#ffffff"/>
+              </g>
+              <!-- selected building pin -->
+              <path d="M146 22 L142 15 a4 4 0 1 1 8 0 Z" fill="currentColor"/>
+              <circle cx="146" cy="15" r="1.5" fill="#ffffff"/>
+            </svg>
+          </div>
+          <p class="desc">Interactive 3D map of SNU's Gwanak campus, with photo-based models of buildings 1–15.</p>
+          <div class="stack-row">
+            <span class="stack">JS · Three.js</span>
+            <span class="status live">Live</span>
+          </div>
+          <a class="open-link" href="https://imjw0826.github.io/snu-campus-3d/" target="_blank" rel="noreferrer">Open →</a>
+        </article>
+
+        <article class="project-card">
+          <div class="meta-row">
+            <span class="label accent">AI tool</span>
+            <span class="label">2026</span>
+          </div>
+          <h3>Lecture Notes</h3>
+          <div class="thumb">
+            <svg viewBox="0 0 220 90" preserveAspectRatio="xMidYMid meet">
+              <rect x="12" y="6" width="196" height="78" rx="5" fill="#ffffff" stroke="currentColor" stroke-width="0.9"/>
+              <!-- uploaded audio card -->
+              <rect x="22" y="18" width="70" height="54" rx="3" fill="rgba(46,110,78,0.03)" stroke="currentColor" stroke-width="0.7"/>
+              <circle cx="31" cy="27" r="4" fill="currentColor"/>
+              <path d="M29.6 25 L33 27 L29.6 29 Z" fill="#ffffff"/>
+              <rect x="38" y="25.5" width="30" height="3" rx="1" fill="rgba(46,110,78,0.35)"/>
+              <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                <line x1="30" y1="50" x2="30" y2="54"/>
+                <line x1="35" y1="45" x2="35" y2="59"/>
+                <line x1="40" y1="48" x2="40" y2="56"/>
+                <line x1="45" y1="41" x2="45" y2="63"/>
+                <line x1="50" y1="46" x2="50" y2="58"/>
+                <line x1="55" y1="43" x2="55" y2="61"/>
+                <line x1="60" y1="49" x2="60" y2="55"/>
+                <line x1="65" y1="44" x2="65" y2="60"/>
+                <line x1="70" y1="47" x2="70" y2="57"/>
+                <line x1="75" y1="50" x2="75" y2="54"/>
+                <line x1="80" y1="46" x2="80" y2="58"/>
+              </g>
+              <!-- arrow -->
+              <line x1="100" y1="45" x2="116" y2="45" stroke="currentColor" stroke-width="1"/>
+              <path d="M112 41.5 L116 45 L112 48.5" fill="none" stroke="currentColor" stroke-width="1"/>
+              <!-- generated note -->
+              <rect x="124" y="12" width="74" height="66" rx="3" fill="#ffffff" stroke="currentColor" stroke-width="0.8"/>
+              <rect x="130" y="18" width="40" height="3.6" rx="1" fill="currentColor"/>
+              <rect x="130" y="27" width="22" height="2.6" rx="1" fill="rgba(46,110,78,0.5)"/>
+              <rect x="134" y="33" width="56" height="2.2" rx="1" fill="rgba(46,110,78,0.24)"/>
+              <rect x="134" y="38" width="48" height="2.2" rx="1" fill="rgba(46,110,78,0.24)"/>
+              <rect x="134" y="43" width="52" height="2.2" rx="1" fill="rgba(46,110,78,0.24)"/>
+              <rect x="130" y="51" width="26" height="2.6" rx="1" fill="rgba(46,110,78,0.5)"/>
+              <rect x="134" y="57" width="54" height="2.2" rx="1" fill="rgba(46,110,78,0.24)"/>
+              <rect x="134" y="62" width="40" height="2.2" rx="1" fill="rgba(46,110,78,0.24)"/>
+              <rect x="134" y="67" width="46" height="2.2" rx="1" fill="rgba(46,110,78,0.24)"/>
+            </svg>
+          </div>
+          <p class="desc">Turns Korean lecture video or audio into a transcript, a context-corrected script, and study notes.</p>
+          <div class="stack-row">
+            <span class="stack">Next.js · Cloudflare</span>
+            <span class="status">Private</span>
+          </div>
+          <a class="open-link" href="https://github.com/imjw0826/forGoonELearning" target="_blank" rel="noreferrer">Source →</a>
+        </article>
+
+        <article class="project-card">
+          <div class="meta-row">
+            <span class="label accent">Web app</span>
+            <span class="label">2026</span>
+          </div>
+          <h3>Subscription Checklist</h3>
+          <div class="thumb">
+            <svg viewBox="0 0 220 90" preserveAspectRatio="xMidYMid meet">
+              <rect x="12" y="6" width="196" height="78" rx="5" fill="#ffffff" stroke="currentColor" stroke-width="0.9"/>
+              <!-- monthly total summary -->
+              <rect x="22" y="14" width="56" height="2.6" rx="1" fill="rgba(46,110,78,0.32)"/>
+              <rect x="22" y="20" width="44" height="6" rx="1" fill="currentColor"/>
+              <rect x="146" y="15" width="52" height="11" rx="5.5" fill="rgba(46,110,78,0.06)" stroke="currentColor" stroke-width="0.6"/>
+              <rect x="153" y="19.2" width="38" height="2.6" rx="1" fill="rgba(46,110,78,0.4)"/>
+              <line x1="12" y1="32" x2="208" y2="32" stroke="currentColor" stroke-width="0.5"/>
+              <!-- subscription rows with value-for-money bars -->
+              <rect x="22" y="38" width="11" height="11" rx="3" fill="rgba(46,110,78,0.5)"/>
+              <rect x="39" y="39" width="46" height="3" rx="1" fill="rgba(46,110,78,0.42)"/>
+              <rect x="39" y="45" width="28" height="2.2" rx="1" fill="rgba(46,110,78,0.22)"/>
+              <line x1="112" y1="43.5" x2="198" y2="43.5" stroke="rgba(46,110,78,0.16)" stroke-width="3" stroke-linecap="round"/>
+              <line x1="112" y1="43.5" x2="186" y2="43.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <rect x="22" y="54" width="11" height="11" rx="3" fill="rgba(46,110,78,0.3)"/>
+              <rect x="39" y="55" width="38" height="3" rx="1" fill="rgba(46,110,78,0.42)"/>
+              <rect x="39" y="61" width="24" height="2.2" rx="1" fill="rgba(46,110,78,0.22)"/>
+              <line x1="112" y1="59.5" x2="198" y2="59.5" stroke="rgba(46,110,78,0.16)" stroke-width="3" stroke-linecap="round"/>
+              <line x1="112" y1="59.5" x2="148" y2="59.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <rect x="22" y="70" width="11" height="11" rx="3" fill="rgba(46,110,78,0.15)" stroke="currentColor" stroke-width="0.5"/>
+              <rect x="39" y="71" width="50" height="3" rx="1" fill="rgba(46,110,78,0.42)"/>
+              <rect x="39" y="77" width="20" height="2.2" rx="1" fill="rgba(46,110,78,0.22)"/>
+              <line x1="112" y1="75.5" x2="198" y2="75.5" stroke="rgba(46,110,78,0.16)" stroke-width="3" stroke-linecap="round"/>
+              <line x1="112" y1="75.5" x2="126" y2="75.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="desc">Tracks recurring subscriptions: monthly total, next payment date, and how well each one pays for itself.</p>
+          <div class="stack-row">
+            <span class="stack">React · Supabase</span>
+            <span class="status live">Live</span>
+          </div>
+          <a class="open-link" href="https://subscriptionchecklist.vercel.app" target="_blank" rel="noreferrer">Open →</a>
+        </article>
+
+        <article class="project-card">
+          <div class="meta-row">
+            <span class="label accent">Automation</span>
+            <span class="label">2026</span>
+          </div>
+          <h3>Valley News Summarizer</h3>
+          <div class="thumb">
+            <svg viewBox="0 0 220 90" preserveAspectRatio="xMidYMid meet">
+              <rect x="12" y="6" width="196" height="78" rx="5" fill="rgba(46,110,78,0.03)" stroke="currentColor" stroke-width="0.9"/>
+              <!-- stacked news posts -->
+              <rect x="30" y="16" width="64" height="44" rx="3" fill="#ffffff" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+              <rect x="25" y="21" width="64" height="44" rx="3" fill="#ffffff" stroke="currentColor" stroke-width="0.6" opacity="0.75"/>
+              <rect x="20" y="26" width="64" height="48" rx="3" fill="#ffffff" stroke="currentColor" stroke-width="0.8"/>
+              <rect x="26" y="32" width="36" height="3.4" rx="1" fill="currentColor"/>
+              <polyline points="27,58 35,52 43,55 52,45 60,49 68,40 77,43" fill="none" stroke="currentColor" stroke-width="1"/>
+              <rect x="26" y="64" width="50" height="2.2" rx="1" fill="rgba(46,110,78,0.25)"/>
+              <rect x="26" y="68.5" width="38" height="2.2" rx="1" fill="rgba(46,110,78,0.25)"/>
+              <!-- arrow -->
+              <line x1="96" y1="48" x2="114" y2="48" stroke="currentColor" stroke-width="1"/>
+              <path d="M110 44.5 L114 48 L110 51.5" fill="none" stroke="currentColor" stroke-width="1"/>
+              <!-- weekly briefing as chat message -->
+              <rect x="122" y="18" width="78" height="54" rx="7" fill="#ffffff" stroke="currentColor" stroke-width="0.8"/>
+              <path d="M128 72 L124 79 L136 72" fill="#ffffff" stroke="currentColor" stroke-width="0.8" stroke-linejoin="round"/>
+              <rect x="126" y="70" width="12" height="3" fill="#ffffff"/>
+              <circle cx="132" cy="28" r="4" fill="currentColor"/>
+              <path d="M130 28 l4 -1.6 l-1.3 3.6 l-0.9 -1.2 Z" fill="#ffffff"/>
+              <rect x="140" y="26.5" width="34" height="3" rx="1" fill="currentColor"/>
+              <rect x="128" y="38" width="64" height="2.4" rx="1" fill="rgba(46,110,78,0.3)"/>
+              <rect x="128" y="44" width="56" height="2.4" rx="1" fill="rgba(46,110,78,0.3)"/>
+              <rect x="128" y="50" width="60" height="2.4" rx="1" fill="rgba(46,110,78,0.3)"/>
+              <rect x="128" y="56" width="42" height="2.4" rx="1" fill="rgba(46,110,78,0.3)"/>
+              <rect x="128" y="62" width="50" height="2.4" rx="1" fill="rgba(46,110,78,0.3)"/>
+            </svg>
+          </div>
+          <p class="desc">Weekly LLM summary of valley.town market news, sent to Telegram every Saturday via GitHub Actions.</p>
+          <div class="stack-row">
+            <span class="stack">Python · Playwright</span>
+            <span class="status">Weekly</span>
+          </div>
+          <a class="open-link" href="https://github.com/imjw0826/valley-news-summarizer" target="_blank" rel="noreferrer">Source →</a>
+        </article>
+
+        <article class="project-card">
+          <div class="meta-row">
             <span class="label accent">Web app</span>
             <span class="label">2026</span>
           </div>
