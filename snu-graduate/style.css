@@ -29,6 +29,71 @@
   --color-cross-text: #244335;
   --font-ko: 'Noto Sans KR', sans-serif;
   --font-en: 'Inter', sans-serif;
+
+  /* Motion tokens (transitions.dev scale) */
+  --duration-stagger: 40ms;
+  --duration-micro: 80ms;
+  --duration-quick: 150ms;
+  --duration-fast: 250ms;
+  --duration-medium: 350ms;
+  --duration-slow: 400ms;
+  --duration-very-slow: 500ms;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: ease-in-out;
+  --ease-out: ease-out;
+  --ease-bounce: cubic-bezier(0.34, 1.36, 0.64, 1);
+  --distance-micro: 4px;
+  --distance-small: 6px;
+  --distance-base: 8px;
+  --distance-medium: 12px;
+  --scale-large: 0.96;
+  --blur-small: 2px;
+  --blur-medium: 3px;
+
+  /* Modal open / close */
+  --modal-open-dur: 250ms;
+  --modal-close-dur: 150ms;
+  --modal-scale: 0.96;
+  --modal-scale-close: 0.96;
+  --modal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Tabs sliding (filter pill) */
+  --tabs-dur: 250ms;
+  --tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Number pop-in */
+  --digit-dur: 500ms;
+  --digit-distance: 8px;
+  --digit-stagger: 70ms;
+  --digit-blur: 2px;
+  --digit-ease: cubic-bezier(0.34, 1.45, 0.64, 1);
+  /* Text states swap (sync status) */
+  --text-swap-dur: 150ms;
+  --text-swap-translate-y: 4px;
+  --text-swap-blur: 2px;
+  --text-swap-ease: ease-in-out;
+  /* Texts reveal (header, course cards) */
+  --stagger-dur: 500ms;
+  --stagger-distance: 12px;
+  --stagger-stagger: 40ms;
+  --stagger-blur: 3px;
+  --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Card resize (progress bar / rings) */
+  --resize-dur: 300ms;
+  --resize-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Error state shake */
+  --shake-distance: 6px;
+  --shake-overshoot: 4px;
+  --shake-dur-a: 80ms;
+  --shake-dur-b: 60ms;
+  --shake-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --revert-hold: 3000ms;
+  --revert-dur: 280ms;
+}
+
+/* Lets the ring fill tween instead of jumping. */
+@property --pct {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
 }
 
 html {
@@ -107,6 +172,10 @@ select {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
+  transition:
+    color var(--duration-quick) var(--ease-smooth-out),
+    background-color var(--duration-quick) var(--ease-smooth-out),
+    border-color var(--duration-quick) var(--ease-smooth-out);
 }
 
 .sync-check {
@@ -231,7 +300,7 @@ select {
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #17253b 0%, #b28956 100%);
-  transition: width 0.25s ease;
+  transition: width var(--resize-dur) var(--resize-ease);
 }
 
 .requirement-rings {
@@ -259,6 +328,7 @@ select {
   place-items: center;
   background:
     conic-gradient(var(--ring-color) 0 var(--pct), rgba(32, 28, 24, 0.1) var(--pct) 100%);
+  transition: --pct var(--resize-dur) var(--resize-ease);
 }
 
 .progress-ring.ge {
@@ -292,7 +362,7 @@ select {
   letter-spacing: -0.05em;
 }
 
-.progress-ring-inner span {
+.progress-ring-inner > span {
   margin-top: 3px;
   font-family: var(--font-en);
   font-size: 0.62rem;
@@ -315,6 +385,7 @@ select {
 }
 
 .filter-controls {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -332,6 +403,8 @@ select {
 }
 
 .filter-btn {
+  position: relative;
+  z-index: 1;
   padding: 6px 14px;
   border: 1px solid var(--color-border);
   border-radius: 999px;
@@ -339,17 +412,56 @@ select {
   color: var(--color-text-muted);
   font-size: 0.76rem;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    color var(--tabs-dur) var(--tabs-ease),
+    background-color var(--tabs-dur) var(--tabs-ease),
+    border-color var(--tabs-dur) var(--tabs-ease),
+    transform var(--duration-medium) var(--ease-smooth-out);
 }
 
-.filter-btn:hover {
+.filter-btn:not(.active):hover {
   transform: translateY(-1px);
+  transition:
+    color var(--tabs-dur) var(--tabs-ease),
+    background-color var(--tabs-dur) var(--tabs-ease),
+    border-color var(--tabs-dur) var(--tabs-ease),
+    transform var(--duration-fast) var(--ease-smooth-out);
 }
 
 .filter-btn.active {
   color: #ffffff;
   background: #17253b;
   border-color: #17253b;
+}
+
+/* Sliding active pill: once JS has measured it, the pill paints the
+   active fill and the active button turns transparent above it. */
+.filter-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: 999px;
+  background: #17253b;
+  opacity: 0;
+  transform: translate(0, 0);
+  transition:
+    transform var(--tabs-dur) var(--tabs-ease),
+    width     var(--tabs-dur) var(--tabs-ease),
+    height    var(--tabs-dur) var(--tabs-ease);
+  will-change: transform, width;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.filter-controls.has-pill .filter-pill {
+  opacity: 1;
+}
+
+.filter-controls.has-pill .filter-btn.active {
+  background-color: transparent;
+  border-color: transparent;
 }
 
 .trash-dropzone {
@@ -366,7 +478,11 @@ select {
   color: #8e3d31;
   cursor: default;
   transform-origin: center right;
-  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth-out),
+    background-color var(--duration-fast) var(--ease-smooth-out),
+    border-color var(--duration-fast) var(--ease-smooth-out),
+    box-shadow var(--duration-fast) var(--ease-smooth-out);
 }
 
 .trash-icon {
@@ -410,7 +526,10 @@ select {
   border: 1px solid var(--color-border);
   background: rgba(255, 255, 255, 0.58);
   backdrop-filter: blur(6px);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  transition:
+    border-color var(--duration-quick) var(--ease-smooth-out),
+    background-color var(--duration-quick) var(--ease-smooth-out),
+    box-shadow var(--duration-quick) var(--ease-smooth-out);
 }
 
 .semester-column.drop-target {
@@ -441,17 +560,47 @@ select {
   border: 1px solid transparent;
   box-shadow: 0 4px 10px rgba(32, 28, 24, 0.04);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  /* Hover-out: softer and a little longer than hover-in. */
+  transition:
+    transform var(--duration-medium) var(--ease-smooth-out),
+    box-shadow var(--duration-medium) var(--ease-smooth-out),
+    opacity var(--duration-quick) var(--ease-smooth-out);
 }
 
 .course-card:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(32, 28, 24, 0.1);
+  transition:
+    transform var(--duration-fast) var(--ease-smooth-out),
+    box-shadow var(--duration-fast) var(--ease-smooth-out),
+    opacity var(--duration-quick) var(--ease-smooth-out);
 }
 
 .course-card.dragging {
   opacity: 0.45;
   cursor: grabbing;
+}
+
+/* Staggered blurred rise when the grid is (re)filtered or first loads.
+   --i is the card's index in its column, capped in JS so the total
+   stagger stays under ~300ms. */
+@keyframes t-card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(var(--stagger-distance));
+    filter: blur(var(--stagger-blur));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.course-card.is-entering,
+.add-course-card.is-entering {
+  animation: t-card-reveal var(--stagger-dur) var(--stagger-ease) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger-stagger));
 }
 
 .course-card.ge {
@@ -540,10 +689,17 @@ select {
   background: rgba(255, 255, 255, 0.42);
   color: var(--color-text-muted);
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  transition:
+    border-color var(--duration-medium) var(--ease-smooth-out),
+    background-color var(--duration-medium) var(--ease-smooth-out),
+    transform var(--duration-medium) var(--ease-smooth-out);
 }
 
 .add-course-card:hover {
+  transition:
+    border-color var(--duration-fast) var(--ease-smooth-out),
+    background-color var(--duration-fast) var(--ease-smooth-out),
+    transform var(--duration-fast) var(--ease-smooth-out);
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.7);
   border-color: rgba(23, 37, 59, 0.5);
@@ -586,6 +742,17 @@ select {
   padding: 20px;
   background: rgba(28, 25, 23, 0.32);
   backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity var(--modal-open-dur) var(--modal-ease);
+}
+
+.modal-backdrop.is-open {
+  opacity: 1;
+}
+
+.modal-backdrop.is-closing {
+  opacity: 0;
+  transition: opacity var(--modal-close-dur) var(--modal-ease);
 }
 
 .modal-backdrop.hidden {
@@ -598,6 +765,31 @@ select {
   border-radius: 14px;
   background: #fffdf9;
   box-shadow: 0 24px 60px rgba(32, 28, 24, 0.16);
+}
+
+/* Modal open / close (transitions.dev) */
+.t-modal {
+  transform-origin: center;
+  transform: scale(var(--modal-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--modal-open-dur) var(--modal-ease),
+    opacity   var(--modal-open-dur) var(--modal-ease);
+  will-change: transform, opacity;
+}
+.t-modal.is-open {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+.t-modal.is-closing {
+  transform: scale(var(--modal-scale-close));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--modal-close-dur) var(--modal-ease),
+    opacity   var(--modal-close-dur) var(--modal-ease);
 }
 
 .modal-header {
@@ -620,6 +812,11 @@ select {
   font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
+  transition: color var(--duration-quick) var(--ease-smooth-out);
+}
+
+.modal-close:hover {
+  color: var(--color-text);
 }
 
 .course-form {
@@ -653,6 +850,7 @@ select {
   border-radius: 8px;
   background: #ffffff;
   color: var(--color-text);
+  transition: border-color var(--duration-quick) var(--ease-out);
 }
 
 .form-field input:focus,
@@ -665,6 +863,58 @@ select {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  will-change: transform;
+}
+
+/* Label row holds the inline validation message so showing it
+   never changes the modal's height. */
+.form-field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.form-field .form-error-msg {
+  color: #8e3d31;
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity    var(--revert-dur) var(--ease-out),
+    visibility 0s linear var(--revert-dur);
+}
+
+.form-field.is-error .form-error-msg {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity    var(--revert-dur) var(--ease-out),
+    visibility 0s linear 0s;
+}
+
+.category-toggle-group .category-toggle {
+  transition:
+    background-color var(--duration-quick) var(--ease-smooth-out),
+    color var(--duration-quick) var(--ease-smooth-out),
+    border-color var(--revert-dur) var(--ease-out);
+}
+
+.form-field.is-error .category-toggle:not(.selected) {
+  border-color: rgba(152, 66, 52, 0.55);
+}
+
+/* Error state shake: legs 80, 80, 60, 60 = 280ms. */
+.category-toggle-group.is-shaking {
+  animation: t-input-shake calc(var(--shake-dur-a) * 2 + var(--shake-dur-b) * 2) linear;
+}
+@keyframes t-input-shake {
+  0%      { transform: translateX(0);                                 animation-timing-function: var(--shake-ease); }
+  28.57%  { transform: translateX(var(--shake-distance));             animation-timing-function: var(--shake-ease); }
+  57.14%  { transform: translateX(calc(var(--shake-distance) * -1)); animation-timing-function: var(--shake-ease); }
+  78.57%  { transform: translateX(var(--shake-overshoot));            animation-timing-function: var(--shake-ease); }
+  100%    { transform: translateX(0); }
 }
 
 .category-toggle {
@@ -675,7 +925,6 @@ select {
   color: var(--color-text-muted);
   font-size: 0.78rem;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .category-toggle:hover {
@@ -703,6 +952,132 @@ select {
   background: #fff5f3;
   color: #8e3d31;
   cursor: pointer;
+}
+
+.danger-btn,
+.secondary-btn,
+.primary-btn {
+  transition:
+    background-color var(--duration-quick) var(--ease-smooth-out),
+    border-color var(--duration-quick) var(--ease-smooth-out),
+    transform var(--duration-quick) var(--ease-smooth-out);
+}
+
+.danger-btn:active,
+.secondary-btn:active,
+.primary-btn:active {
+  transform: scale(0.98);
+}
+
+.danger-btn:hover {
+  border-color: rgba(152, 66, 52, 0.6);
+}
+
+.secondary-btn:hover {
+  background-color: #efe8dd;
+}
+
+.primary-btn:hover {
+  background-color: #22344f;
+}
+
+/* Number pop-in (transitions.dev) */
+@keyframes t-digit-pop-in {
+  0%   {
+    transform: translate(0, var(--digit-distance));
+    opacity: 0;
+    filter: blur(var(--digit-blur));
+  }
+  100% { transform: translate(0, 0); opacity: 1; filter: blur(0); }
+}
+
+.t-digit-group {
+  display: inline-flex;
+  align-items: baseline;
+}
+.t-digit {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+.t-digit-group.is-animating .t-digit {
+  animation: t-digit-pop-in var(--digit-dur) var(--digit-ease) both;
+}
+.t-digit-group.is-animating .t-digit[data-stagger="1"] {
+  animation-delay: var(--digit-stagger);
+}
+.t-digit-group.is-animating .t-digit[data-stagger="2"] {
+  animation-delay: calc(var(--digit-stagger) * 2);
+}
+.t-digit-group.is-animating .t-digit[data-same] {
+  animation: none;
+}
+
+/* Text states swap (transitions.dev) */
+.t-text-swap {
+  display: inline-block;
+  transform: translateY(0);
+  filter: blur(0);
+  opacity: 1;
+  transition:
+    transform var(--text-swap-dur) var(--text-swap-ease),
+    filter    var(--text-swap-dur) var(--text-swap-ease),
+    opacity   var(--text-swap-dur) var(--text-swap-ease);
+  will-change: transform, filter, opacity;
+}
+.t-text-swap.is-exit {
+  transform: translateY(calc(var(--text-swap-translate-y) * -1));
+  filter: blur(var(--text-swap-blur));
+  opacity: 0;
+}
+.t-text-swap.is-enter-start {
+  transform: translateY(var(--text-swap-translate-y));
+  filter: blur(var(--text-swap-blur));
+  opacity: 0;
+  transition: none;
+}
+
+/* Texts reveal (transitions.dev) — header lines on first load */
+.t-stagger-line {
+  opacity: 0;
+  transform: translateY(var(--stagger-distance));
+  filter: blur(var(--stagger-blur));
+  transition:
+    opacity   var(--stagger-dur) var(--stagger-ease),
+    transform var(--stagger-dur) var(--stagger-ease),
+    filter    var(--stagger-dur) var(--stagger-ease);
+  will-change: transform, opacity, filter;
+}
+.t-stagger-line--2 { transition-delay: var(--stagger-stagger); }
+.t-stagger-line--3 { transition-delay: calc(var(--stagger-stagger) * 2); }
+
+.t-stagger.is-shown .t-stagger-line {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-modal,
+  .modal-backdrop,
+  .filter-pill,
+  .filter-btn,
+  .t-text-swap,
+  .t-stagger-line,
+  .progress-ring,
+  .credit-progress-fill {
+    transition: none !important;
+  }
+  .t-digit-group .t-digit,
+  .course-card.is-entering,
+  .add-course-card.is-entering,
+  .category-toggle-group.is-shaking {
+    animation: none !important;
+  }
+  .course-card:hover,
+  .add-course-card:hover,
+  .filter-btn:hover {
+    transform: none;
+  }
 }
 
 .danger-btn.hidden {

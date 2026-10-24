@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>임정원 이수 현황</title>
-  <link rel="stylesheet" href="style.css?v=20260611b" />
+  <link rel="stylesheet" href="style.css?v=20261024a" />
 </head>
 <body class="graduate-page">
   <div class="project-topbar">
@@ -16,22 +16,22 @@
 
   <header class="site-header">
     <div class="header-top">
-      <div class="header-title">
-        <span class="header-university" id="header-university"></span>
-        <h1 class="header-department" id="header-title"></h1>
-        <span class="header-subtitle" id="header-subtitle"></span>
+      <div class="header-title t-stagger">
+        <span class="header-university t-stagger-line" id="header-university"></span>
+        <h1 class="header-department t-stagger-line t-stagger-line--2" id="header-title"></h1>
+        <span class="header-subtitle t-stagger-line t-stagger-line--3" id="header-subtitle"></span>
       </div>
 
       <section class="credit-summary" aria-label="credit summary">
         <div class="total-summary">
           <div class="summary-item">
             <span class="summary-label">이수학점</span>
-            <strong class="summary-value" id="credit-count"></strong>
+            <strong class="summary-value t-digit-group" id="credit-count"></strong>
           </div>
           <div class="summary-divider"></div>
           <div class="summary-item">
             <span class="summary-label">채워야 할 학점</span>
-            <strong class="summary-value" id="credit-required"></strong>
+            <strong class="summary-value t-digit-group" id="credit-required"></strong>
           </div>
         </div>
         <div class="credit-progress-bar" aria-label="total credit progress">
@@ -44,10 +44,11 @@
 
   <nav class="filter-bar">
     <div class="filter-controls">
+      <span class="filter-pill" aria-hidden="true"></span>
       <span class="filter-label">Filter</span>
       <span class="sync-status syncing" id="sync-status" role="status" aria-live="polite">
         <span class="sync-check" aria-hidden="true">✓</span>
-        <span class="sync-text">Cloud sync</span>
+        <span class="sync-text t-text-swap">Cloud sync</span>
       </span>
       <button class="filter-btn active" data-filter="all">전체</button>
       <button class="filter-btn" data-filter="교양">교양</button>
@@ -65,7 +66,7 @@
   <main class="curriculum-grid" id="curriculum-grid"></main>
 
   <div class="modal-backdrop hidden" id="course-modal-backdrop">
-    <div class="course-modal" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
+    <div class="course-modal t-modal" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
       <div class="modal-header">
         <h2 class="modal-title" id="course-modal-title">과목 추가</h2>
         <button class="modal-close" id="course-modal-close" type="button" aria-label="닫기">×</button>
@@ -100,8 +101,11 @@
           </label>
         </div>
 
-        <div class="form-field">
-          <span>분류 (중복 선택 가능)</span>
+        <div class="form-field" id="course-categories-field">
+          <div class="form-field-head">
+            <span>분류 (중복 선택 가능)</span>
+            <span class="form-error-msg" role="alert">분류를 하나 이상 선택해주세요.</span>
+          </div>
           <div class="category-toggle-group" id="course-categories">
             <button type="button" class="category-toggle" data-category="교양">교양</button>
             <button type="button" class="category-toggle" data-category="기계공학 전공">기계공학 전공</button>
@@ -179,6 +183,62 @@
       }
     };
 
+    // Motion helpers (transitions.dev). Timings are read from the :root
+    // tokens so JS timers stay in sync with the CSS.
+    const rootStyle = getComputedStyle(document.documentElement);
+    function cssMs(name, fallback) {
+      const value = parseFloat(rootStyle.getPropertyValue(name));
+      return Number.isFinite(value) ? value : fallback;
+    }
+    const MAX_STAGGERED_CARDS = 7;
+
+    function setDigits(group, value) {
+      const next = String(value);
+      const prev = group.textContent.replace(/\s+/g, '');
+      if (prev === next) return;
+
+      let same = 0;
+      while (same < prev.length && same < next.length && prev[same] === next[same]) same++;
+
+      group.classList.remove('is-animating');
+      group.replaceChildren();
+      const chars = next.split('');
+      chars.forEach((ch, i) => {
+        const span = document.createElement('span');
+        span.className = 't-digit';
+        span.textContent = ch;
+        if (i < same) span.dataset.same = '';
+        if (i === chars.length - 2) span.dataset.stagger = '1';
+        else if (i === chars.length - 1) span.dataset.stagger = '2';
+        group.appendChild(span);
+      });
+      void group.offsetHeight;
+      group.classList.add('is-animating');
+    }
+
+    // Text states swap, coalescing rapid updates (e.g. Syncing → Cloud saved)
+    // so only the latest label is shown once the current swap finishes.
+    function swapText(el, next) {
+      el._target = next;
+      if (el._swapping) return;
+      if (el.textContent === next) return;
+
+      el._swapping = true;
+      const dur = cssMs('--text-swap-dur', 150);
+      el.classList.add('is-exit');
+      setTimeout(() => {
+        el.textContent = el._target;
+        el.classList.remove('is-exit');
+        el.classList.add('is-enter-start');
+        void el.offsetHeight;
+        el.classList.remove('is-enter-start');
+        setTimeout(() => {
+          el._swapping = false;
+          if (el._target !== el.textContent) swapText(el, el._target);
+        }, dur);
+      }, dur);
+    }
+
     function createUid() {
       if (window.crypto && typeof window.crypto.randomUUID === 'function') {
         return window.crypto.randomUUID();
@@ -238,7 +298,7 @@
       const status = document.getElementById('sync-status');
       const textNode = status.querySelector('.sync-text');
       if (textNode) {
-        textNode.textContent = text;
+        swapText(textNode, text);
       } else {
         status.textContent = text;
       }
@@ -358,12 +418,47 @@
       }
     }
 
+    // Tabs sliding: the pill follows the active filter button. Tracks the
+    // vertical offset too because the filter row can wrap.
+    function moveFilterPill(animate) {
+      const controls = document.querySelector('.filter-controls');
+      const pill = controls.querySelector('.filter-pill');
+      const active = controls.querySelector('.filter-btn.active');
+      if (!pill || !active) return;
+
+      const place = () => {
+        const box = controls.getBoundingClientRect();
+        const rect = active.getBoundingClientRect();
+        pill.style.transform = `translate(${rect.left - box.left}px, ${rect.top - box.top}px)`;
+        pill.style.width = `${rect.width}px`;
+        pill.style.height = `${rect.height}px`;
+      };
+
+      if (animate && controls.classList.contains('has-pill')) {
+        place();
+        return;
+      }
+
+      const prev = pill.style.transition;
+      pill.style.transition = 'none';
+      place();
+      void pill.offsetWidth;
+      pill.style.transition = prev;
+      controls.classList.add('has-pill');
+    }
+
     function setFilter(filter) {
+      const changed = filter !== state.currentFilter;
       state.currentFilter = filter;
       document.querySelectorAll('.filter-btn').forEach(button => {
         button.classList.toggle('active', button.dataset.filter === filter);
       });
-      buildGrid();
+      moveFilterPill(true);
+      // Reveal the cards on the first render and when the filter changes,
+      // but not on every sync re-render.
+      const animate = changed || !state.hasRevealed;
+      buildGrid(animate);
+      if (animate) state.hasRevealed = true;
     }
 
     function buildCard(course) {
@@ -437,7 +532,16 @@
       renderAll();
     }
 
-    function buildGrid() {
+    function markEntering(element, index) {
+      element.classList.add('is-entering');
+      element.style.setProperty('--i', Math.min(index, MAX_STAGGERED_CARDS));
+      element.addEventListener('animationend', () => {
+        element.classList.remove('is-entering');
+        element.style.removeProperty('--i');
+      }, { once: true });
+    }
+
+    function buildGrid(animate = false) {
       const grid = document.getElementById('curriculum-grid');
       grid.innerHTML = '';
 
@@ -460,8 +564,10 @@
             .filter(course => state.currentFilter === 'all' || course.categories.includes(state.currentFilter))
             .sort(compareCourses);
 
-          visibleCourses.forEach(course => {
-            list.appendChild(buildCard(course));
+          visibleCourses.forEach((course, index) => {
+            const card = buildCard(course);
+            if (animate) markEntering(card, index);
+            list.appendChild(card);
           });
 
           if (visibleCourses.length === 0) {
@@ -471,7 +577,9 @@
             list.appendChild(empty);
           }
 
-          list.appendChild(buildAddCard(year, semester));
+          const addCard = buildAddCard(year, semester);
+          if (animate) markEntering(addCard, visibleCourses.length);
+          list.appendChild(addCard);
 
           section.addEventListener('dragover', event => {
             event.preventDefault();
@@ -497,14 +605,14 @@
     }
 
     function buildRequirementCard(config) {
-      const percent = config.required > 0 ? Math.min((config.current / config.required) * 100, 100) : 0;
       const card = document.createElement('section');
       card.className = 'ring-card';
+      card.dataset.ring = config.ringClass;
 
       card.innerHTML = `
-        <div class="progress-ring ${config.ringClass}" style="--pct:${percent.toFixed(2)}%">
+        <div class="progress-ring ${config.ringClass}" style="--pct:0%">
           <div class="progress-ring-inner">
-            <strong>${config.current}</strong>
+            <strong class="t-digit-group"></strong>
             <span>/ ${config.required}</span>
           </div>
         </div>
@@ -514,11 +622,27 @@
       return card;
     }
 
+    // Rings are kept in the DOM and updated in place so the fill and the
+    // count can animate from their previous values.
+    function updateRequirementCard(card, config) {
+      const percent = config.required > 0 ? Math.min((config.current / config.required) * 100, 100) : 0;
+      const ring = card.querySelector('.progress-ring');
+      void ring.offsetWidth; // commit the previous fill (0% for a new ring) so it tweens
+      ring.style.setProperty('--pct', `${percent.toFixed(2)}%`);
+      setDigits(card.querySelector('.progress-ring-inner strong'), config.current);
+    }
+
     function updateHeader() {
       document.title = `${state.meta.studentName} 이수 현황`;
       document.getElementById('header-university').textContent = state.meta.university;
       document.getElementById('header-title').textContent = `${state.meta.studentName} (${state.meta.studentId})`;
       document.getElementById('header-subtitle').textContent = `${state.meta.department} · ${state.meta.programSummary}`;
+
+      const headerTitle = document.querySelector('.header-title');
+      if (!headerTitle.classList.contains('is-shown')) {
+        void headerTitle.offsetHeight;
+        headerTitle.classList.add('is-shown');
+      }
     }
 
     function updateSummary() {
@@ -528,11 +652,9 @@
         ? Math.min((total / state.meta.totalCreditsRequired) * 100, 100)
         : 0;
 
-      document.getElementById('credit-count').textContent = total;
-      document.getElementById('credit-required').textContent = state.meta.totalCreditsRequired;
+      setDigits(document.getElementById('credit-count'), total);
+      setDigits(document.getElementById('credit-required'), state.meta.totalCreditsRequired);
       document.getElementById('credit-progress').style.width = `${totalPercent}%`;
-
-      rings.innerHTML = '';
 
       [
         {
@@ -553,7 +675,14 @@
           required: state.meta.requirements.businessAdministration,
           ringClass: 'business'
         }
-      ].forEach(config => rings.appendChild(buildRequirementCard(config)));
+      ].forEach(config => {
+        let card = rings.querySelector(`[data-ring="${config.ringClass}"]`);
+        if (!card) {
+          card = buildRequirementCard(config);
+          rings.appendChild(card);
+        }
+        updateRequirementCard(card, config);
+      });
     }
 
     function renderAll() {
@@ -588,16 +717,67 @@
       document.getElementById('course-credits').value = course ? String(course.credits) : '3';
       setModalCategories(course ? course.categories : ['교양']);
 
-      document.getElementById('course-modal-backdrop').classList.remove('hidden');
+      clearCategoryError();
+
+      const backdrop = document.getElementById('course-modal-backdrop');
+      const modal = backdrop.querySelector('.t-modal');
+      clearTimeout(state.modalCloseTimer);
+      backdrop.classList.remove('hidden', 'is-closing');
+      modal.classList.remove('is-closing');
+      void modal.offsetWidth; // start from the pre-open scale
+      backdrop.classList.add('is-open');
+      modal.classList.add('is-open');
       requestAnimationFrame(() => {
         document.getElementById('course-name').focus();
       });
     }
 
     function closeCourseModal() {
+      const backdrop = document.getElementById('course-modal-backdrop');
+      if (backdrop.classList.contains('hidden') || backdrop.classList.contains('is-closing')) return;
+
+      const modal = backdrop.querySelector('.t-modal');
       state.editingUid = null;
-      document.getElementById('course-modal-backdrop').classList.add('hidden');
-      document.getElementById('course-form').reset();
+      backdrop.classList.remove('is-open');
+      modal.classList.remove('is-open');
+      backdrop.classList.add('is-closing');
+      modal.classList.add('is-closing');
+
+      clearTimeout(state.modalCloseTimer);
+      state.modalCloseTimer = setTimeout(() => {
+        backdrop.classList.add('hidden');
+        backdrop.classList.remove('is-closing');
+        modal.classList.remove('is-closing');
+        document.getElementById('course-form').reset();
+        clearCategoryError();
+      }, cssMs('--modal-close-dur', 150));
+    }
+
+    function clearCategoryError() {
+      const field = document.getElementById('course-categories-field');
+      clearTimeout(field._revertTimer);
+      field._revertTimer = null;
+      field.classList.remove('is-error');
+    }
+
+    // Error state shake on the category group instead of a blocking alert.
+    function showCategoryError() {
+      const field = document.getElementById('course-categories-field');
+      const group = document.getElementById('course-categories');
+      field.classList.add('is-error');
+
+      group.classList.remove('is-shaking');
+      void group.offsetWidth;
+      group.classList.add('is-shaking');
+
+      const shakeMs = cssMs('--shake-dur-a', 80) * 2 + cssMs('--shake-dur-b', 60) * 2;
+      setTimeout(() => group.classList.remove('is-shaking'), shakeMs + 20);
+
+      clearTimeout(field._revertTimer);
+      field._revertTimer = setTimeout(() => {
+        field._revertTimer = null;
+        field.classList.remove('is-error');
+      }, shakeMs + cssMs('--revert-hold', 3000));
     }
 
     function clearDragState() {
@@ -629,6 +809,7 @@
       const button = event.target.closest('.category-toggle');
       if (!button) return;
       button.classList.toggle('selected');
+      if (button.classList.contains('selected')) clearCategoryError();
     });
 
     document.getElementById('course-form').addEventListener('submit', event => {
@@ -636,7 +817,7 @@
 
       const categories = getModalCategories();
       if (categories.length === 0) {
-        alert('분류를 하나 이상 선택해주세요.');
+        showCategoryError();
         return;
       }
 
@@ -723,6 +904,17 @@
 
       trashDropzone.classList.toggle('drag-near', isNear);
     });
+
+    // Snap the filter pill (no tween) on first paint, resize and font load.
+    requestAnimationFrame(() => moveFilterPill(false));
+    window.addEventListener('resize', () => moveFilterPill(false));
+    // The sync label sits before the buttons, so its width changes move them.
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(() => moveFilterPill(false)).observe(document.getElementById('sync-status'));
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => moveFilterPill(false));
+    }
 
     async function bootTracker() {
       const seedCourses = loadStoredCourses() || [];
