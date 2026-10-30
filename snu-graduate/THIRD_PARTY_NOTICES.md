@@ -1,8 +1,8 @@
 # affectUI
 
-The segmented filter's raised sliding indicator and progress card
-styling/motion were adapted for vanilla HTML/CSS/JavaScript
-from affectUI's free, MIT-licensed components:
+The visual skin (neutral surfaces, raised filter pill, soft borders, shadows
+and accent colors) references affectUI's free, MIT-licensed components.
+The tracker's original layout, DOM and JavaScript behavior are preserved.
 
 - https://www.affectui.com/components/segmented-control
 - https://www.affectui.com/r/segmented-control.json

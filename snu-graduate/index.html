@@ -4,14 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>임정원 이수 현황</title>
-  <meta name="theme-color" content="#f6f7f9" />
-  <link rel="stylesheet" href="style.css?v=20261030" />
+  <link rel="stylesheet" href="style.css?v=20261030b" />
 </head>
 <body class="graduate-page">
   <div class="project-topbar">
-    <a class="project-topbar-link" href="../index.html"><span class="brand-mark" aria-hidden="true">g.</span> Garden <span class="breadcrumb-divider">/</span> <span>Academic workspace</span></a>
+    <a class="project-topbar-link" href="../index.html">Garden home</a>
     <div class="project-topbar-links">
-      <span class="sync-status syncing" id="sync-status" role="status" aria-live="polite"><span class="sync-check" aria-hidden="true"></span><span class="sync-text t-text-swap">연결 중</span></span>
+      <span class="project-topbar-current">SNU Graduate Tracker</span>
     </div>
   </div>
 
@@ -19,56 +18,52 @@
     <div class="header-top">
       <div class="header-title t-stagger">
         <span class="header-university t-stagger-line" id="header-university"></span>
-        <p class="page-eyebrow">MY ACADEMIC JOURNEY</p>
-        <h1 class="page-title t-stagger-line t-stagger-line--2">졸업까지, 한 학기씩.</h1>
-        <p class="header-department" id="header-title"></p>
+        <h1 class="header-department t-stagger-line t-stagger-line--2" id="header-title"></h1>
         <span class="header-subtitle t-stagger-line t-stagger-line--3" id="header-subtitle"></span>
       </div>
-    </div>
+
       <section class="credit-summary" aria-label="credit summary">
-        <div class="total-credit-card">
-        <div class="metric-heading"><span>전체 이수 현황</span><span class="metric-symbol" aria-hidden="true">↗</span></div>
         <div class="total-summary">
           <div class="summary-item">
+            <span class="summary-label">이수학점</span>
             <strong class="summary-value t-digit-group" id="credit-count"></strong>
-            <span class="summary-label">/ <span class="t-digit-group" id="credit-required"></span> 학점</span>
           </div>
-          <span class="progress-percent" id="credit-percent">0%</span>
+          <div class="summary-divider"></div>
+          <div class="summary-item">
+            <span class="summary-label">채워야 할 학점</span>
+            <strong class="summary-value t-digit-group" id="credit-required"></strong>
+          </div>
         </div>
-        <div class="credit-progress-bar" id="total-progress" role="progressbar" aria-label="전체 학점" aria-valuemin="0" aria-valuemax="130" aria-valuenow="0">
+        <div class="credit-progress-bar" aria-label="total credit progress">
           <div class="credit-progress-fill" id="credit-progress" style="width: 0%"></div>
-        </div>
-        <p class="metric-caption" id="credit-caption">학점 현황을 불러오고 있어요.</p>
         </div>
         <div class="requirement-rings" id="requirement-rings"></div>
       </section>
+    </div>
   </header>
 
-  <section class="board-panel" aria-labelledby="board-title">
-    <div class="board-heading"><div><h2 id="board-title">학기별 수강 계획 <span class="course-total" id="course-total">0과목</span></h2><p>과목을 눌러 수정하거나, 드래그해서 학기를 옮겨보세요.</p></div>
-    </div>
-  <nav class="filter-bar" aria-label="과목 분류">
-    <div class="filter-scroller">
+  <nav class="filter-bar">
     <div class="filter-controls">
       <span class="filter-pill" aria-hidden="true"></span>
+      <span class="filter-label">Filter</span>
+      <span class="sync-status syncing" id="sync-status" role="status" aria-live="polite">
+        <span class="sync-check" aria-hidden="true">✓</span>
+        <span class="sync-text t-text-swap">Cloud sync</span>
+      </span>
       <button class="filter-btn active" data-filter="all">전체</button>
       <button class="filter-btn" data-filter="교양">교양</button>
       <button class="filter-btn" data-filter="기계공학 전공">기계공학 전공</button>
       <button class="filter-btn" data-filter="경영학 전공">경영학 전공</button>
       <button class="filter-btn" data-filter="타 학과 전공">타 학과 전공</button>
     </div>
-    </div>
 
     <button class="trash-dropzone" id="trash-dropzone" type="button" aria-label="drag here to delete">
-      <svg class="trash-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6m4-6v6"/></svg>
-      <span class="trash-text">여기로 끌어 삭제</span>
+      <span class="trash-icon">🗑</span>
+      <span class="trash-text">버리기</span>
     </button>
   </nav>
 
-  <main class="curriculum-grid" id="curriculum-grid" tabindex="0" aria-label="학기별 과목 보드, 가로로 스크롤할 수 있습니다"></main>
-  <div class="board-footer"><span><span class="legend-dot mech"></span> 기계공학 <span class="legend-dot business"></span> 경영학 <span class="legend-dot ge"></span> 교양 <span class="legend-dot cross"></span> 타 학과</span><span>학기별로 가로 스크롤 →</span></div>
-  </section>
-  <footer class="project-footer"><span>나만의 속도로 채워가는 대학 생활.</span><a href="https://www.affectui.com/" target="_blank" rel="noreferrer">UI adapted from affectUI ↗</a></footer>
+  <main class="curriculum-grid" id="curriculum-grid"></main>
 
   <div class="modal-backdrop hidden" id="course-modal-backdrop">
     <div class="course-modal t-modal" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
@@ -314,21 +309,21 @@
       saveLocalCourses();
 
       if (!state.remote.enabled || !state.remote.ready || state.remote.applyingRemote) {
-        updateSyncStatus('기기에 저장됨', 'local');
+        updateSyncStatus('Local saved', 'local');
         return;
       }
 
-      updateSyncStatus('동기화 중', 'syncing');
+      updateSyncStatus('Syncing...', 'syncing');
 
       try {
         await state.remote.setDoc(state.remote.docRef, {
           courses: state.courses,
           updatedAt: state.remote.serverTimestamp()
         }, { merge: true });
-        updateSyncStatus('클라우드 저장됨', 'online');
+        updateSyncStatus('Cloud saved', 'online');
       } catch (error) {
         console.warn('Firestore save failed. Local copy was kept.', error);
-        updateSyncStatus('오프라인 · 기기에 저장됨', 'local');
+        updateSyncStatus('Cloud offline · local saved', 'local');
       }
     }
 
@@ -376,7 +371,7 @@
         const isConfigured = Boolean(firebaseSettings.enabled && firebaseConfig.apiKey && !String(firebaseConfig.apiKey).includes('YOUR_'));
 
         if (!isConfigured) {
-          updateSyncStatus('기기 저장 모드', 'local');
+          updateSyncStatus('Local mode', 'local');
           return false;
         }
 
@@ -396,7 +391,7 @@
         state.remote.setDoc = firestore.setDoc;
         state.remote.serverTimestamp = firestore.serverTimestamp;
 
-        updateSyncStatus('클라우드 연결 중', 'syncing');
+        updateSyncStatus('Connecting...', 'syncing');
 
         state.remote.unsubscribe = firestore.onSnapshot(state.remote.docRef, snapshot => {
           const data = snapshot.data();
@@ -407,10 +402,10 @@
           }
 
           void renderSyncedCourses(data.courses);
-          updateSyncStatus('클라우드 동기화됨', 'online');
+          updateSyncStatus('Cloud synced', 'online');
         }, error => {
           console.warn('Firestore listener failed. Local copy remains available.', error);
-          updateSyncStatus('오프라인 · 기기에 저장됨', 'local');
+          updateSyncStatus('Cloud offline · local saved', 'local');
           state.courses = seedCourses.map(normalizeCourse);
           renderAll();
           setFilter(state.currentFilter);
@@ -418,7 +413,7 @@
         return true;
       } catch (error) {
         console.warn('Firebase sync is not configured or could not start.', error);
-        updateSyncStatus('기기 저장 모드', 'local');
+        updateSyncStatus('Local mode', 'local');
         return false;
       }
     }
@@ -483,7 +478,6 @@
           <span class="card-credits">${course.credits}학점</span>
         </div>
         <div class="card-name">${course.name}</div>
-        <div class="card-edit-hint" aria-hidden="true">클릭하여 수정 <span>↗</span></div>
       `;
 
       card.addEventListener('click', () => {
@@ -569,14 +563,6 @@
           const visibleCourses = semesterCourses
             .filter(course => state.currentFilter === 'all' || course.categories.includes(state.currentFilter))
             .sort(compareCourses);
-          const count = document.createElement('span');
-          count.className = 'semester-count';
-          count.textContent = visibleCourses.length;
-          label.appendChild(count);
-          const subtotal = document.createElement('p');
-          subtotal.className = 'semester-subtotal';
-          subtotal.textContent = `${sumCredits(visibleCourses)}학점`;
-          section.appendChild(subtotal);
 
           visibleCourses.forEach((course, index) => {
             const card = buildCard(course);
@@ -587,7 +573,7 @@
           if (visibleCourses.length === 0) {
             const empty = document.createElement('div');
             empty.className = 'semester-empty';
-            empty.textContent = semesterCourses.length === 0 ? '새로운 학기를 계획해보세요' : '조건에 맞는 과목이 없어요';
+            empty.textContent = semesterCourses.length === 0 ? '—' : '해당 분류 과목 없음';
             list.appendChild(empty);
           }
 
@@ -619,36 +605,31 @@
     }
 
     function buildRequirementCard(config) {
-      const percent = config.required > 0 ? Math.min((config.current / config.required) * 100, 100) : 0;
       const card = document.createElement('section');
-      card.className = `ring-card ${config.ringClass}`;
+      card.className = 'ring-card';
       card.dataset.ring = config.ringClass;
 
       card.innerHTML = `
-        <div class="metric-heading"><span>${config.label}</span><span class="legend-dot ${config.ringClass}" aria-hidden="true"></span></div>
-        <div class="requirement-value"><strong class="t-digit-group"></strong><span>/ ${config.required} 학점</span><span class="requirement-percent">${Math.round(percent)}%</span></div>
-        <div class="requirement-track" role="progressbar" aria-label="${config.label}" aria-valuemin="0" aria-valuemax="${config.required}" aria-valuenow="${Math.min(config.current, config.required)}" aria-valuetext="${config.current} / ${config.required} 학점">
-          <span style="width:0%"></span>
+        <div class="progress-ring ${config.ringClass}" style="--pct:0%">
+          <div class="progress-ring-inner">
+            <strong class="t-digit-group"></strong>
+            <span>/ ${config.required}</span>
+          </div>
         </div>
-        <p class="metric-caption">${config.current >= config.required ? '목표 학점을 채웠어요' : `${config.required - config.current}학점 더 필요해요`}</p>
+        <div class="ring-label">${config.label}</div>
       `;
 
       return card;
     }
 
-    // Keep progress cards mounted so counts and fill animate between updates.
+    // Rings are kept in the DOM and updated in place so the fill and the
+    // count can animate from their previous values.
     function updateRequirementCard(card, config) {
       const percent = config.required > 0 ? Math.min((config.current / config.required) * 100, 100) : 0;
-      const track = card.querySelector('.requirement-track');
-      void track.offsetWidth;
-      track.querySelector('span').style.width = `${percent}%`;
-      track.setAttribute('aria-valuenow', Math.min(config.current, config.required));
-      track.setAttribute('aria-valuetext', `${config.current} / ${config.required} 학점`);
-      setDigits(card.querySelector('.requirement-value strong'), config.current);
-      card.querySelector('.requirement-percent').textContent = `${Math.round(percent)}%`;
-      card.querySelector('.metric-caption').textContent = config.current >= config.required
-        ? '목표 학점을 채웠어요'
-        : `${config.required - config.current}학점 더 필요해요`;
+      const ring = card.querySelector('.progress-ring');
+      void ring.offsetWidth; // commit the previous fill (0% for a new ring) so it tweens
+      ring.style.setProperty('--pct', `${percent.toFixed(2)}%`);
+      setDigits(card.querySelector('.progress-ring-inner strong'), config.current);
     }
 
     function updateHeader() {
@@ -674,11 +655,6 @@
       setDigits(document.getElementById('credit-count'), total);
       setDigits(document.getElementById('credit-required'), state.meta.totalCreditsRequired);
       document.getElementById('credit-progress').style.width = `${totalPercent}%`;
-      document.getElementById('credit-percent').textContent = `${Math.round(totalPercent)}%`;
-      document.getElementById('total-progress').setAttribute('aria-valuenow', Math.min(total, state.meta.totalCreditsRequired));
-      document.getElementById('total-progress').setAttribute('aria-valuetext', `${total} / ${state.meta.totalCreditsRequired} 학점`);
-      document.getElementById('credit-caption').textContent = total >= state.meta.totalCreditsRequired ? '목표 학점을 채웠어요' : `졸업 목표까지 ${state.meta.totalCreditsRequired - total}학점 남았어요`;
-      document.getElementById('course-total').textContent = `${state.courses.length}과목`;
 
       [
         {
