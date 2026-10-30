@@ -1155,3 +1155,136 @@ select {
     grid-template-columns: 1fr;
   }
 }
+
+/* affectUI-inspired surface styling. Layout, spacing, typography metrics,
+   breakpoints and motion remain identical to the original tracker. */
+:root {
+  --color-bg: #f6f7f9;
+  --color-panel: #ffffff;
+  --color-text: #242933;
+  --color-text-muted: #737c8a;
+  --color-border: #e1e5ec;
+  --color-shadow: rgba(26, 37, 55, 0.06);
+  --color-ge-bg: #ffffff;
+  --color-ge-border: #e6dece;
+  --color-ge-text: #34312c;
+  --color-major-bg: #ffffff;
+  --color-major-border: #d0daf2;
+  --color-major-text: #29354c;
+  --color-mech-bg: #ffffff;
+  --color-mech-text: #29354c;
+  --color-business-bg: #ffffff;
+  --color-business-border: #dfd4ed;
+  --color-business-text: #3d304a;
+  --color-cross-bg: #ffffff;
+  --color-cross-border: #cfe3da;
+  --color-cross-text: #2c443b;
+}
+
+body { background: var(--color-bg); }
+.credit-summary {
+  border-color: #e1e5ec;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(26, 37, 55, 0.025), 0 6px 20px rgba(26, 37, 55, 0.025);
+}
+.summary-divider { background: #e7eaf0; }
+.credit-progress-bar { background: #edf0f5; }
+.credit-progress-fill { background: #6480dc; }
+.progress-ring {
+  background: conic-gradient(var(--ring-color) 0 var(--pct), #edf0f5 var(--pct) 100%);
+}
+.progress-ring.ge { --ring-color: #b58e4f; }
+.progress-ring.mech { --ring-color: #6480dc; }
+.progress-ring.business { --ring-color: #a17ac3; }
+.progress-ring-inner { background: #ffffff; }
+
+.sync-status { border-radius: 8px; }
+.sync-status.local, .sync-status.syncing {
+  background: #ffffff;
+  border-color: #e1e5ec;
+}
+.sync-status.online {
+  color: #397a63;
+  border-color: #d3e7dc;
+  background: #eef7f1;
+}
+.sync-check { background: rgba(255, 255, 255, 0.8); }
+
+.filter-btn {
+  border-color: #e1e5ec;
+  border-radius: 8px;
+  background: #eef0f4;
+}
+.filter-btn.active { color: #29354c; background: #ffffff; border-color: #d7dde8; }
+.filter-pill {
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px #d7dde8, 0 1px 3px rgba(26, 37, 55, 0.07);
+}
+
+.semester-column {
+  border-color: #e3e7ee;
+  background: #f0f2f6;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+.semester-column-label { border-color: #dde2eb; color: #626d7e; }
+.semester-column.drop-target {
+  border-color: #a4b7ec;
+  background: #edf2ff;
+  box-shadow: inset 0 0 0 2px rgba(100, 128, 220, 0.1);
+}
+.course-card {
+  border-radius: 9px;
+  box-shadow: 0 1px 2px rgba(26, 37, 55, 0.035);
+}
+.course-card:hover {
+  box-shadow: 0 4px 12px rgba(26, 37, 55, 0.08);
+}
+.course-card.business {
+  background: var(--color-business-bg);
+  border-color: var(--color-business-border);
+  color: var(--color-business-text);
+}
+.course-card.ge .card-type-tag { color: #8c6b31; background: #f8f1e5; }
+.course-card.mech .card-type-tag { color: #5871b9; background: #edf1fc; }
+.course-card.business .card-type-tag { color: #8b65ad; background: #f3edf9; }
+.course-card.cross .card-type-tag { color: #46856d; background: #ebf5ef; }
+.card-credits { color: #7d8796; }
+.add-course-card {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: #cfd7e4;
+  border-radius: 9px;
+}
+.add-course-card:hover { background: #ffffff; border-color: #aabbdc; }
+.semester-empty, .state-message { border-color: #dbe1eb; color: #8892a1; }
+.trash-dropzone { border-color: #e8cbd0; color: #b16470; background: #fff6f7; border-radius: 8px; }
+.trash-dropzone.drag-near, .trash-dropzone.drag-over {
+  border-color: #d99ba5;
+  background: #ffedf0;
+  box-shadow: 0 8px 20px rgba(177, 100, 112, 0.12);
+}
+
+.modal-backdrop { background: rgba(28, 37, 54, 0.3); }
+.course-modal {
+  border-color: #dfe4ed;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(26, 37, 55, 0.18);
+}
+.form-field input, .form-field select { border-color: #dce2ec; background: #ffffff; }
+.form-field input:focus, .form-field select:focus { border-color: #9db2e8; outline-color: #e4ebfc; }
+.category-toggle { border-color: #dfe4ed; border-radius: 8px; }
+.category-toggle:hover { border-color: #b3c4ec; }
+.category-toggle.selected { color: #526cb3; border-color: #c5d2f2; background: #eef2fc; }
+.form-field .form-error-msg { color: #b05767; }
+.form-field.is-error .category-toggle:not(.selected) { border-color: #d6a1ad; }
+.secondary-btn { border-color: #dfe4ed; color: #647084; background: #f5f6f9; }
+.secondary-btn:hover { background: #eceff5; }
+.primary-btn { background: #303b50; border-color: #303b50; }
+.primary-btn:hover { background: #43516b; }
+.danger-btn { color: #b05767; background: #fff5f7; border-color: #ebced6; }
+.danger-btn:hover { border-color: #d6a1ad; }
+button:focus-visible, a:focus-visible {
+  outline: 2px solid #a5b9ed;
+  outline-offset: 3px;
+}
