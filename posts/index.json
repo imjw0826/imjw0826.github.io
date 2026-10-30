@@ -1,5 +1,12 @@
 [
   {
+    "slug": "design-references",
+    "title": "디자인 레퍼런스 모음",
+    "date": "2026-10-30",
+    "tags": ["design", "reference", "motion"],
+    "excerpt": "transitions.dev, shadcn/ui, Arc UI, Affect UI 등 웹사이트 작업에 참고하는 디자인 자료를 정리하고, transitions.dev의 모션 토큰과 규칙을 SNU Graduate Tracker에 적용한 과정을 남깁니다."
+  },
+  {
     "slug": "markdown-test",
     "title": "Markdown Rendering Test",
     "date": "2026-04-23",
