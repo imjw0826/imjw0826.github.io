@@ -1,3 +1,3 @@
-# Personal Knowledge Hub
+# imjw0826.github.io
 
-A simple, single-page website for showcasing your CV and sharing university study notes.
+Jungwon Im's personal site (GitHub Pages). Static HTML/CSS/JS — run locally with `python3 -m http.server`.
